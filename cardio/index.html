@@ -1,0 +1,1033 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
+<title>Cardio QCM UM6SS</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: ECG-paper ground, sticky chapter rail on desktop, one reading column; four views (plan, cours, qcm, cartes) */
+:root{
+  --paper:#fbf7f6; --grid:rgba(205,96,108,.10); --grid-strong:rgba(205,96,108,.20);
+  --ink:#1a2030; --muted:#5a6173; --line:#eadede; --card:#ffffff; --soft:#f5eeee;
+  --art:#c02a3a; --art-soft:rgba(192,42,58,.09);
+  --ven:#2b5a9f; --ven-soft:rgba(43,90,159,.09);
+  --trace:#c02a3a; --ok:#1e8656; --ok-soft:rgba(30,134,86,.10); --bad:#b9472b; --bad-soft:rgba(185,71,43,.10);
+  --warn:#9a6a00; --warn-soft:rgba(176,124,0,.11);
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0f141d; --grid:rgba(78,230,163,.045); --grid-strong:rgba(78,230,163,.09);
+  --ink:#e7ebf3; --muted:#9aa3b6; --line:#253041; --card:#161d29; --soft:#1b2331;
+  --art:#ff6b77; --art-soft:rgba(255,107,119,.12); --ven:#76a5f2; --ven-soft:rgba(118,165,242,.12);
+  --trace:#4ee6a3; --ok:#4cc38a; --ok-soft:rgba(76,195,138,.13); --bad:#ff8a66; --bad-soft:rgba(255,138,102,.13);
+  --warn:#f0c04d; --warn-soft:rgba(240,192,77,.12); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0f141d; --grid:rgba(78,230,163,.045); --grid-strong:rgba(78,230,163,.09);
+  --ink:#e7ebf3; --muted:#9aa3b6; --line:#253041; --card:#161d29; --soft:#1b2331;
+  --art:#ff6b77; --art-soft:rgba(255,107,119,.12); --ven:#76a5f2; --ven-soft:rgba(118,165,242,.12);
+  --trace:#4ee6a3; --ok:#4cc38a; --ok-soft:rgba(76,195,138,.13); --bad:#ff8a66; --bad-soft:rgba(255,138,102,.13);
+  --warn:#f0c04d; --warn-soft:rgba(240,192,77,.12); color-scheme:dark }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),
+  linear-gradient(var(--grid-strong) 1px,transparent 1px),linear-gradient(90deg,var(--grid-strong) 1px,transparent 1px);
+  background-size:8px 8px,8px 8px,40px 40px,40px 40px;}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+p{margin:0}
+.mono{font-family:var(--f-mono)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--ven);outline-offset:2px;border-radius:6px}
+
+/* hero */
+.hero{padding-block:40px 18px;display:grid;gap:18px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hero h1{font-size:clamp(34px,6.4vw,64px);font-weight:800;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--art)}
+.hero .lead{max-width:62ch;color:var(--muted);font-size:17px}
+.strip{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden}
+.strip svg{display:block;width:100%;height:92px}
+.strip .lab{position:absolute;top:6px;left:8px;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.stats{display:flex;flex-wrap:wrap;gap:10px 26px;font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.stats b{font-family:var(--f-display);font-size:22px;color:var(--ink);font-weight:700;margin-right:6px;font-variant-numeric:tabular-nums}
+.stats .count b{color:var(--art)}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs a{flex:0 0 auto;text-decoration:none;color:var(--muted);font-weight:600;padding:13px 14px;border-bottom:2px solid transparent;font-size:15px}
+.tabs a[aria-current="page"]{color:var(--ink);border-color:var(--art)}
+.tabs a span{font-family:var(--f-mono);font-size:11px;margin-left:6px;color:var(--muted)}
+
+main{padding-block:28px 80px}
+.view[hidden]{display:none}
+
+/* generic */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.sec-title{font-size:clamp(24px,3.4vw,34px);font-weight:700;margin-bottom:8px}
+.sub{color:var(--muted);max-width:66ch}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.pill.art{background:var(--art-soft);color:var(--art)}
+.pill.ven{background:var(--ven-soft);color:var(--ven)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);padding:10px 16px;border-radius:10px;font-weight:600;font-size:15px}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.primary:hover{opacity:.9}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.stack{display:grid;gap:14px}
+
+/* plan view */
+.method{display:grid;gap:12px;counter-reset:m}
+.mrow{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding:16px 0;border-top:1px solid var(--line)}
+.mrow:first-child{border-top:0}
+.mrow .n{font-family:var(--f-display);font-size:30px;font-weight:800;color:var(--art);line-height:1}
+.mrow h3{font-size:19px;margin-bottom:4px}
+.mrow p{color:var(--muted)}
+.mrow p b{color:var(--ink)}
+.evidence{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.ev{border-radius:10px;padding:14px 16px;border:1px solid var(--line);background:var(--card)}
+.ev h4{margin:0 0 6px;font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.ev.hi h4{color:var(--ok)} .ev.lo h4{color:var(--bad)}
+.ev ul{margin:0;padding-left:18px;color:var(--muted)}
+.days{display:grid;gap:12px}
+.day{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:18px;border-radius:var(--r);background:var(--card);border:1px solid var(--line)}
+.day.today{border-color:var(--art);box-shadow:0 0 0 1px var(--art)}
+.day .when{font-family:var(--f-display);font-weight:700;font-size:20px;line-height:1.2}
+.day .when small{display:block;font-family:var(--f-mono);font-weight:400;font-size:12px;color:var(--muted);margin-top:4px}
+.todo{display:grid;gap:8px}
+.todo label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.todo input{margin-top:5px;accent-color:var(--art);width:17px;height:17px;flex:0 0 auto}
+.todo label.done span{text-decoration:line-through;color:var(--muted)}
+.tactics{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.tactic{padding:14px 16px;border-left:3px solid var(--ven);background:var(--ven-soft);border-radius:0 10px 10px 0}
+.tactic b{display:block;margin-bottom:2px}
+.src{font-size:14px;color:var(--muted)}
+.src a{color:var(--ven)}
+
+/* cours */
+.cours{display:grid;grid-template-columns:240px minmax(0,1fr);gap:40px;align-items:start}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px);display:grid;gap:2px;max-height:calc(100vh - 90px);overflow:auto}
+.rail button{all:unset;cursor:pointer;display:grid;grid-template-columns:28px 1fr;gap:6px;padding:7px 10px;border-radius:8px;font-size:14px;color:var(--muted)}
+.rail button:hover{background:var(--soft);color:var(--ink)}
+.rail button.on{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.rail button .k{font-family:var(--f-mono);font-size:12px;padding-top:2px}
+.rail button:focus-visible{outline:2px solid var(--ven)}
+.chap{padding-block:8px 44px;border-bottom:1px dashed var(--line);margin-bottom:36px;scroll-margin-top:80px}
+.chap:last-child{border-bottom:0}
+.chap header{display:grid;gap:8px;margin-bottom:18px}
+.chap h2{font-size:clamp(24px,3.2vw,32px);font-weight:700}
+.chap .slides{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.prose{display:grid;gap:12px;max-width:72ch}
+.prose p, .prose li{color:var(--ink)}
+.prose ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.prose b{font-weight:700}
+.term{font-weight:700;color:var(--ven)}
+.art{color:var(--art);font-weight:700}
+.box{border-radius:10px;padding:14px 16px;max-width:72ch}
+.box h4{margin:0 0 6px;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.box ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.box.trap{background:var(--bad-soft)} .box.trap h4{color:var(--bad)}
+.box.tip{background:var(--warn-soft)} .box.tip h4{color:var(--warn)}
+.box.nurse{background:var(--ok-soft)} .box.nurse h4{color:var(--ok)}
+.box.blurt{background:var(--soft);border:1px dashed var(--muted)} .box.blurt h4{color:var(--muted)}
+details.check{max-width:72ch;border:1px solid var(--line);background:var(--card);border-radius:10px}
+details.check summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.check summary::-webkit-details-marker{display:none}
+details.check summary::after{content:"Chouf jawab";font-family:var(--f-mono);font-size:12px;color:var(--ven);font-weight:400;flex:0 0 auto;padding-top:3px}
+details.check[open] summary::after{content:"Khbbi"}
+details.check div{padding:0 16px 14px;color:var(--muted)}
+.tbl{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:520px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+td.open{color:var(--ok);font-weight:600} td.shut{color:var(--bad);font-weight:600}
+figure{margin:0;max-width:760px}
+figure .fig{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;overflow-x:auto}
+figure svg{display:block;width:100%;height:auto;min-width:460px}
+figcaption{font-size:13px;color:var(--muted);margin-top:6px;font-family:var(--f-mono)}
+.chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:72ch}
+.chain span{padding:6px 10px;border-radius:8px;background:var(--card);border:1px solid var(--line);font-size:14px;font-weight:600}
+.chain i{font-style:normal;color:var(--muted)}
+.chain span.slow{border-color:var(--warn);background:var(--warn-soft)}
+
+/* ordering game */
+.order{max-width:72ch;display:grid;gap:10px}
+.pool,.answer{display:flex;flex-wrap:wrap;gap:6px;min-height:44px;padding:8px;border-radius:10px;border:1px dashed var(--line);background:var(--card)}
+.answer{border-style:solid}
+.chip{border:1px solid var(--line);background:var(--soft);padding:6px 10px;border-radius:8px;font-size:14px;font-weight:600}
+.chip.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.chip.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.msg{font-size:14px;color:var(--muted)}
+
+
+.pics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px;margin-bottom:20px;max-width:900px}
+.pic{margin:0;display:grid;gap:6px;align-content:start}
+.pic .zoom{all:unset;cursor:zoom-in;display:block;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.pic .zoom:focus-visible{outline:2px solid var(--ven)}
+.pic img{display:block;width:100%;height:auto;max-width:100%}
+.pic figcaption{font-family:var(--f-body);font-size:14px;color:var(--ink);display:grid;gap:2px;margin:0}
+.pic .dn{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.repere{max-width:72ch;margin-bottom:18px;padding:18px 20px;border-radius:var(--r);background:var(--ven-soft);border:1px solid var(--ven)}
+.repere h3{font-size:19px;margin-bottom:8px;color:var(--ven)}
+.repere ol{margin:0;padding-left:20px;display:grid;gap:7px}
+.lb{position:fixed;inset:0;z-index:50;background:#0b0e14;display:grid;grid-template-rows:auto 1fr;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.lb .bar2{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;color:#eef1f6;font-family:var(--f-mono);font-size:12px}
+.lb .bar2 button{border:1px solid rgba(255,255,255,.3);background:transparent;color:#eef1f6;border-radius:8px;padding:7px 12px;font-size:13px}
+.lb .sc{overflow:auto;display:grid;place-items:center;padding:8px}
+.lb img{max-width:100%;max-height:calc(100vh - 80px);background:#fff;border-radius:8px;cursor:zoom-in}
+.lb.big img{max-width:none;max-height:none;width:220%;cursor:zoom-out}
+@media (min-width:900px){.lb.big img{width:160%}}
+
+/* qcm */
+.setup{display:grid;gap:22px}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.mode{all:unset;cursor:pointer;display:grid;gap:4px;padding:18px;border-radius:var(--r);background:var(--card);border:1px solid var(--line)}
+.mode:hover{border-color:var(--muted)}
+.mode:focus-visible{outline:2px solid var(--ven)}
+.mode b{font-family:var(--f-display);font-size:20px}
+.mode span{color:var(--muted);font-size:14px}
+.mode.hot{border-color:var(--art)}
+.chapchips{display:flex;flex-wrap:wrap;gap:8px}
+.chapchips button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 12px;font-size:14px}
+.chapchips button:hover{border-color:var(--muted)}
+.qwrap{max-width:760px;display:grid;gap:16px}
+.qtop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--art);width:0;transition:width .25s}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:16px}
+.qcard h3{font-family:var(--f-body);font-size:19px;font-weight:600;line-height:1.45}
+.opts{display:grid;gap:8px}
+.opt{all:unset;cursor:pointer;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--paper)}
+.opt:hover{border-color:var(--muted)}
+.opt:focus-visible{outline:2px solid var(--ven)}
+.opt .l{font-family:var(--f-mono);font-weight:600;width:26px;height:26px;display:grid;place-items:center;border-radius:6px;border:1px solid var(--line);font-size:13px}
+.opt.sel{border-color:var(--ven);background:var(--ven-soft)}
+.opt.sel .l{background:var(--ven);color:var(--card);border-color:var(--ven)}
+.opt.good{border-color:var(--ok);background:var(--ok-soft)}
+.opt.good .l{background:var(--ok);color:var(--card);border-color:var(--ok)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .l{background:var(--bad);color:var(--card);border-color:var(--bad)}
+.opt.miss{border-color:var(--ok);border-style:dashed}
+.opt[aria-disabled="true"]{cursor:default}
+.exp{border-radius:10px;padding:14px 16px;background:var(--soft)}
+.exp b.v{display:block;margin-bottom:4px}
+.exp.ok b.v{color:var(--ok)} .exp.no b.v{color:var(--bad)}
+.result{display:grid;gap:14px}
+.score{font-family:var(--f-display);font-size:64px;font-weight:800;line-height:1}
+.score small{font-size:22px;color:var(--muted);font-weight:500}
+.wrongs{display:grid;gap:8px}
+.wrongs div{padding:10px 14px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:15px}
+.wrongs div small{display:block;color:var(--ok);margin-top:2px}
+
+/* flash */
+.flash{max-width:640px;display:grid;gap:16px}
+.fc{all:unset;cursor:pointer;display:block;min-height:230px;border-radius:16px;border:1px solid var(--line);background:var(--card);padding:28px;position:relative}
+.fc:focus-visible{outline:2px solid var(--ven)}
+.fc .face{display:grid;gap:10px}
+.fc .side{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.fc .front{font-family:var(--f-display);font-size:26px;font-weight:700;line-height:1.25}
+.fc .back{font-size:18px;line-height:1.55}
+.fc .back b{color:var(--art)}
+.fc .dz{color:var(--muted);font-size:15px}
+.fc .hint{position:absolute;bottom:14px;right:18px;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+
+footer{padding-block:24px 40px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer a{color:var(--ven)}
+
+@media (max-width:860px){
+  .cours{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static;max-height:none;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));overflow:visible}
+  .rail button{min-width:0}
+  .day{grid-template-columns:1fr;gap:10px}
+}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+</style>
+</head><body>
+
+
+<header class="wrap hero">
+  <div class="eyebrow">Anatomie &amp; physiologie · Infirmiers 1re année · UM6SS</div>
+  <h1>Système <em>cardio</em>vasculaire</h1>
+  <p class="lead">L'cours kaml (35 diapos) m3a les tsawer dyalo, mcharre7 b Darija, b les mots techniques b Français bach tfhemhom f l'exam. Kayn m3ah plan dyal l9raya 7tta l jm3a, QCM b les explications, o flashcards.</p>
+  <div class="strip" aria-hidden="true">
+    <span class="lab">DII · 25 mm/s · 10 mm/mV</span>
+    <svg viewBox="0 0 1000 92" preserveAspectRatio="none">
+      <path id="ecgline" d="M0 60 H60 q10 -12 20 0 H112 l6 6 l10 -50 l10 60 l6 -16 H190 q22 -22 44 0 H310 q10 -12 20 0 H362 l6 6 l10 -50 l10 60 l6 -16 H440 q22 -22 44 0 H560 q10 -12 20 0 H612 l6 6 l10 -50 l10 60 l6 -16 H690 q22 -22 44 0 H810 q10 -12 20 0 H862 l6 6 l10 -50 l10 60 l6 -16 H940 q22 -22 44 0 H1000" fill="none" stroke="var(--trace)" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+      <circle r="4" fill="var(--trace)"><animateMotion id="dot" dur="4s" repeatCount="indefinite"><mpath href="#ecgline"/></animateMotion></circle>
+    </svg>
+  </div>
+  <div class="stats">
+    <span class="count"><b id="cd">–</b>yam l l'exam (jm3a 13/11)</span>
+    <span><b>12</b>chapitres</span>
+    <span><b id="nq">–</b>QCM</span>
+    <span><b id="nf">–</b>flashcards</span>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="wrap">
+    <a href="#plan" data-v="plan">Plan &amp; méthode</a>
+    <a href="#cours" data-v="cours">Cours<span>12 ch.</span></a>
+    <a href="#qcm" data-v="qcm">QCM<span id="tq"></span></a>
+    <a href="#cartes" data-v="cartes">Flashcards</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ============ PLAN ============ -->
+<section class="view stack" id="v-plan" style="gap:40px">
+  <div class="stack">
+    <h2 class="sec-title">Kifach t9ra had l'cours</h2>
+    <p class="sub">Had chi machi "astuces dyal YouTube". Hada li kat9olo les études f psychologie cognitive, o hiya nefs l'base li kaybniw 3liha les guides dyal Harvard o Oxford. L'idée lkbira: <b>dmagh kayt3elem mli kay7awel ykhrrej l'ma3loma, machi mli kay9raha 3awtani.</b></p>
+  </div>
+
+  <div class="evidence">
+    <div class="ev hi"><h4>Utilité élevée (Dunlosky 2013)</h4><ul><li><b>Practice testing</b>: testi rassek (QCM, flashcards, kteb men rassek)</li><li><b>Distributed practice</b>: fre9 l9raya 3la bzzaf d les jours</li></ul></div>
+    <div class="ev lo"><h4>Utilité faible</h4><ul><li>3awed l9raya (relecture)</li><li>Surlignage b les stylos</li><li>Résumé ila katnskh ghir l'cours</li></ul></div>
+  </div>
+
+  <div class="method">
+    <div class="mrow"><div class="n">1</div><div><h3>Testi rassek 9bel ma t7ess rak wajed</h3><p>Men b3d kol chapitre, <b>sedd l'écran o kteb kolchi li 3e9elti 3lih</b> (blurting), 3ad dir les QCM. L'erreur li katdirha daba hiya li ghadi tfekkrek f l'exam. Roediger &amp; Karpicke (2006): li dawzo test 3e9lo kter men li 3awdo l9raya, b3d simana.</p></div></div>
+    <div class="mrow"><div class="n">2</div><div><h3>Fre9 3la les jours (spacing)</h3><p>Ma tbloqich kolchi f lila wa7da. <b>3awed les erreurs dyal lbare7 f sba7</b> 9bel ma tbda chi 7aja jdida. Kol mrra kaykon chwiya sa3ib bach t3e9el, dakchi li kaythebbet.</p></div></div>
+    <div class="mrow"><div class="n">3</div><div><h3>Khellet les chapitres (interleaving)</h3><p>F l'exam les questions ghadi yjiw mkhltin. L'examen blanc hna kaykhellet kolchi b qessd, bach dmaghek yt3elem ychouf <b>"ach mn chapitre hada?"</b> wa7do.</p></div></div>
+    <div class="mrow"><div class="n">4</div><div><h3>Char7 b Darija l chi wa7ed (Feynman)</h3><p>Ila 9edrti tchre7 "3lach B1 kayji f début dyal systole" b klam bsi7 l sa7bek wla l rassek, rak fhemti. Ila t7bessti, hadik hiya l'blassa li khassek t3awed.</p></div></div>
+    <div class="mrow"><div class="n">5</div><div><h3>N3es mzyan lila dyal lkhmis</h3><p>N3as kayrsekh dakchi li 9riti f nhar. <b>Sahar lila 9bel l'exam kayderr kter mma kaynfe3.</b> Jm3a f sba7 ghir révision khfifa, walou ma jdid.</p></div></div>
+  </div>
+
+  <div class="stack">
+    <h2 class="sec-title">Plan 7tta l jm3a</h2>
+    <p class="sub">Kol 7aja derti, cochiha. Kat7fed ghir f had l'navigateur.</p>
+    <div class="days" id="days"></div>
+  </div>
+
+  <div class="stack">
+    <h2 class="sec-title">Tactiques dyal QCM</h2>
+    <div class="tactics">
+      <div class="tactic"><b>9ra l'énoncé 2 mrrat</b>"La FAUSSE", "sauf", "toujours", "jamais": had l'kalimat kay9elbo l'jawab kaml.</div>
+      <div class="tactic"><b>Réponses multiples: kol proposition wa7edha</b>9ra kol 7erf b7al ila kan Vrai/Faux bo7do. Ma tkhtarch b "l'impression dyal l'ensemble".</div>
+      <div class="tactic"><b>Les pièges classiques</b>Artère pulmonaire = sang pauvre en O₂. Mitrale = gauche. B1 = valves AV. Onde T = repolarisation ventriculaire.</div>
+      <div class="tactic"><b>Jawb 3la les sahlin lawlin</b>Ila t7bessti f question, dawzha o rje3 liha. Ma tdi3ch l'wa9t f wa7da.</div>
+    </div>
+  </div>
+
+  <p class="src">Sources: <a href="https://www.psychologicalscience.org/news/releases/which-study-strategies-make-the-grade.html" target="_blank" rel="noopener">Dunlosky et al., Psychological Science in the Public Interest (2013)</a> · Roediger &amp; Karpicke, Psychological Science (2006) · Brown, Roediger &amp; McDaniel, <i>Make It Stick</i> (Harvard University Press, 2014) · Contenu du cours: <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-1-heart-anatomy" target="_blank" rel="noopener">OpenStax A&amp;P 2e, ch. 19</a> et <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-structure-and-function-of-blood-vessels" target="_blank" rel="noopener">ch. 20</a>.</p>
+</section>
+
+<!-- ============ COURS ============ -->
+<section class="view" id="v-cours" hidden>
+  <div class="cours">
+    <nav class="rail" id="rail" aria-label="Chapitres"></nav>
+    <div id="chapters">
+
+<article class="chap" id="c1">
+  <header><span class="slides">Diapos 3–5</span><h2>1 · Rôles, situation et anatomie externe</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s01.jpg" aria-label="Kebber tswira diapo 1"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s01.jpg" alt="Diapo 1" loading="lazy"></button><figcaption><span>Vue antérieure. Lazre9 (veines caves) f l'isser dyal tswira = jiht limen dyal l'patient. L'aorte = l'anbub l7mer li tal3 o kayt9wwes lfo9 (crosse).</span><span class="dn">Diapo 1 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s04.jpg" aria-label="Kebber tswira diapo 4"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s04.jpg" alt="Diapo 4" loading="lazy"></button><figcaption><span>L'cœur f west sder, bin 2 poumons, fo9 l'diaphragme. Chouf l'pointe kat mil lte7t o l'isser.</span><span class="dn">Diapo 4 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s05.jpg" aria-label="Kebber tswira diapo 5"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s05.jpg" alt="Diapo 5" loading="lazy"></button><figcaption><span>Vue antérieure (lfo9) o postérieure (lte7t): les vaisseaux d'entrée o de sortie, o les coronaires f les sillons.</span><span class="dn">Diapo 5 · clicki bach tkebber</span></figcaption></figure></div>
+  <div class="prose">
+    <p><b>Chno kaydir had système?</b> L'<span class="term">cœur</span> howa pompe: kay3ti l'<b>pression</b> li katkhelli ddem ydour. Les <span class="term">vaisseaux</span> kayfer9o ddem 3la jism o kayrj3oh. O ddem kayhez les <b>gaz</b> (O₂, CO₂), les nutriments, les hormones o les déchets. Kaychareko 7tta f <b>thermorégulation</b> (s5ana dyal jism) o l'<b>homéostasie</b>. Ddem kaydour f <b>circuit fermé</b>: ma kaykhrejch.</p>
+    <p><b>Fin kayn l'cœur?</b> F <span class="term">médiastin</span>, ya3ni l'west dyal sder bin 2 poumons. Kayrta7 <b>fo9 l'diaphragme</b> o <b>mor l'sternum</b>. 9edd l'm9ebda (poing).</p>
+    <ul>
+      <li><span class="term">Pointe / apex</span>: lte7t o l'isser (bas et gauche).</li>
+      <li><span class="term">Base</span>: hiya l'face postérieure (lfo9 o lor), fin kaydkhlo o kaykhrjo les gros vaisseaux.</li>
+    </ul>
+    <p><b>Men barra:</b> les <span class="term">oreillettes</span> lfo9, les <span class="term">ventricules</span> lte7t o kbar. Les <span class="term">auricules</span> homa des petites poches dyal les oreillettes. Kayn <span class="term">sillon coronaire</span> (bin oreillettes o ventricules) o <span class="term">sillon interventriculaire antérieur</span> (bin 2 ventricules): fihom l'graisse o les vaisseaux coronaires.</p>
+    <ul>
+      <li><b>Vaisseaux de sortie</b>: <span class="art">aorte</span> (men VG) o <span class="art">tronc pulmonaire</span> (men VD).</li>
+      <li><b>Vaisseaux d'entrée</b>: <span class="term">veines caves</span> sup. o inf. (f OD) o <span class="term">veines pulmonaires</span> (f OG).</li>
+      <li><span class="term">Ligament artériel</span>: kayrbet tronc/artère pulmonaire m3a crosse aortique. Hwa ba9i men l'canal artériel dyal l'fœtus.</li>
+    </ul>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li><b>Droite / gauche</b> f les planches = dyal l'patient, machi dyalek. L'cœur droit kayban 3la l'isser dyal tswira.</li><li>L'base <b>machi</b> lte7t. Lte7t hiya l'pointe.</li><li>Médiastin ≠ cavité pleurale (les poumons homa li f cavité pleurale).</li></ul></div>
+    <details class="check"><summary>Chno homa les vaisseaux li kaydkhlo l l'cœur?</summary><div>VCS, VCI (→ OD) o 4 veines pulmonaires (→ OG). (+ sinus coronaire → OD.) Aorte o tronc pulmonaire kaykhrjo.</div></details>
+  </div>
+</article>
+
+<article class="chap" id="c2">
+  <header><span class="slides">Diapo 6</span><h2>2 · Péricarde et paroi cardiaque</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s06.jpg" aria-label="Kebber tswira diapo 6"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s06.jpg" alt="Diapo 6" loading="lazy"></button><figcaption><span>Men barra l dakhel: péricarde fibreux → feuillet pariétal → cavité péricardique → épicarde → myocarde → endocarde.</span><span class="dn">Diapo 6 · clicki bach tkebber</span></figcaption></figure></div>
+  <div class="prose">
+    <p>Tkhayel l'cœur dakhel <b>sac</b>. Had sac howa l'<span class="term">péricarde</span>, fih 2 parties:</p>
+    <ul>
+      <li><span class="term">Péricarde fibreux</span>: l'couche lbarraniya, 9wiya, kat7mi o katsbbet l'cœur.</li>
+      <li><span class="term">Péricarde séreux</span>: fih 2 feuillets: <b>pariétal</b> (lasse9 f l'fibreux) o <b>viscéral</b> (lasse9 f l'cœur). L'feuillet viscéral smito 3awtani <span class="term">épicarde</span>.</li>
+      <li>Bin pariétal o viscéral kayna l'<span class="term">cavité péricardique</span>, fiha <b>liquide péricardique</b> li kay<b>na9es les frottements</b> mli l'cœur kaydre9.</li>
+    </ul>
+    <p><b>Paroi dyal l'cœur</b> (men barra l dakhel):</p>
+    <ul>
+      <li><span class="term">Épicarde</span>: couche externe (= feuillet viscéral).</li>
+      <li><span class="term">Myocarde</span>: l'muscle li kaytqbbed. Howa l'akthar épais. F VG kaykon 3red bzzaf 7it kaydfe3 l jism kaml.</li>
+      <li><span class="term">Endocarde</span>: revêtement interne dyal les cavités o les valves.</li>
+    </ul>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="box tip"><h4>Bach t3e9el</h4><ul><li><b>É</b>pi = <b>É</b>xterieur (épi = fo9), <b>Endo</b> = dakhel, <b>Myo</b> = muscle. Tartib: Épi → Myo → Endo.</li><li>L'épicarde kayntami l 2 7wayej: l'péricarde séreux <b>o</b> l'paroi. Hada so2al classique.</li></ul></div>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>L'liquide machi dakhel l'myocarde, howa f l'cavité péricardique.</li><li>Épicarde = feuillet <b>viscéral</b>, machi pariétal.</li></ul></div>
+  </div>
+</article>
+
+<article class="chap" id="c3">
+  <header><span class="slides">Diapos 7–9</span><h2>3 · Les quatre cavités et les quatre valves</h2></header><div class="repere"><h3>Kifach t9ra tswira dyal l'cœur</h3><ol>
+<li><b>Limen o l'isser m9loubin.</b> Tkhayel l'patient wa9ef 9oddamek o kaychouf fik: limen dyalo jat f l'isser dyalek. Hadchi 3lach <b>OD o VD kaybano 3la l'isser dyal tswira</b>, o OG o VG 3la limen.</li>
+<li><b>Lfo9 = oreillettes</b> (sghar, b les auricules). <b>Lte7t = ventricules</b> (kbar). L'pointe lte7t hiya VG.</li>
+<li><b>Les couleurs:</b> lazre9 = pauvre en O₂ (veines caves, OD, VD, tronc pulmonaire). L7mer = riche en O₂ (veines pulmonaires, OG, VG, aorte).</li>
+<li><b>L'aorte:</b> l'anbub l7mer lghlid li kaykhrej men l'west dyal l'cœur (men VG), kaytla3 (aorte ascendante), kayt9wwes b7al 3ssa (crosse aortique) o kaynzel lor (aorte descendante).</li>
+<li><b>Tronc pulmonaire:</b> l'anbub lazre9 li 9eddam l'aorte, kaykhrej men VD o kayt9sem l joj artères pulmonaires.</li>
+<li><b>Men 9eddam (vue antérieure)</b>, VD howa li kayban kter. OG kayna lor, ma katbanch bzzaf men 9eddam.</li></ol></div><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s08.jpg" aria-label="Kebber tswira diapo 8"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s08.jpg" alt="Diapo 8" loading="lazy"></button><figcaption><span>Hna mktoubin OD, OG, VD, VG. Les flèches kayweriw trajet ddem. Septum interventriculaire kayfer9 VD 3la VG.</span><span class="dn">Diapo 8 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s07.jpg" aria-label="Kebber tswira diapo 7"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s07.jpg" alt="Diapo 7" loading="lazy"></button><figcaption><span>Coupe frontale: les 4 cavités, les 4 valves, cordages tendineux o muscles papillaires. Chouf ch7al paroi dyal VG 3erda.</span><span class="dn">Diapo 7 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s09.jpg" aria-label="Kebber tswira diapo 9"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s09.jpg" alt="Diapo 9" loading="lazy"></button><figcaption><span>Les 4 valves men lfo9 (oreillettes m7iyydin): AV lor, sigmoïdes 9eddam.</span><span class="dn">Diapo 9 · clicki bach tkebber</span></figcaption></figure></div>
+  <div class="prose">
+    <ul>
+      <li><span class="term">OD</span> (oreillette droite): katsta9bel <b>retour veineux systémique</b> (VCS + VCI + sinus coronaire). Ddem pauvre en O₂.</li>
+      <li><span class="term">VD</span> (ventricule droit): kaydfe3 l <b>poumons</b> 3la tari9 tronc pulmonaire.</li>
+      <li><span class="term">OG</span>: katsta9bel les <b>veines pulmonaires</b> (ddem riche en O₂).</li>
+      <li><span class="term">VG</span>: kaydfe3 l <b>aorte</b>. Paroi l'akthar 3erda.</li>
+    </ul>
+    <p>Les <span class="term">septums</span> kayfer9o limen 3la l'isser: <b>septum interauriculaire</b> (fih <span class="term">fosse ovale</span>, ba9i men foramen ovale dyal l'fœtus) o <b>septum interventriculaire</b>.</p>
+    <p><b>Dakhel les ventricules:</b> <span class="term">muscles papillaires</span> mrbotin b <span class="term">cordages tendineux</span> m3a les valves AV. Khdemthom: ma ykhelliwch l'valve tt9leb l oreillette mli l'ventricule kaytqbbed. Kaynin 7tta <span class="term">trabécules charnues</span> (des reliefs musculaires) o <span class="term">bande modératrice</span> f VD.</p>
+  </div>
+  <div class="tbl" style="margin-top:16px">
+    <table>
+      <thead><tr><th>Valve</th><th>Bin</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td><b>Tricuspide</b></td><td>OD → VD</td><td>Auriculo-ventriculaire (AV), 3 cuspides</td></tr>
+        <tr><td><b>Pulmonaire</b></td><td>VD → tronc pulmonaire</td><td>Sigmoïde (semi-lunaire)</td></tr>
+        <tr><td><b>Mitrale</b> (bicuspide)</td><td>OG → VG</td><td>Auriculo-ventriculaire (AV), 2 cuspides</td></tr>
+        <tr><td><b>Aortique</b></td><td>VG → aorte</td><td>Sigmoïde (semi-lunaire)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="prose"><p><b>Dor dyal les valves:</b> kayman3o l'<b>reflux</b> o kayfarḍo <b>sens unique</b> l ddem.</p></div>
+    <div class="box tip"><h4>Bach t3e9el</h4><ul><li><b>Tri à droite</b>: "TRI" = 3 cuspides = DROITE. Mitrale/bicuspide = 2 = gauche.</li><li>Les sigmoïdes smiythom 3la l'vaisseau li jaya men b3dhom: pulmonaire → tronc pulmonaire, aortique → aorte.</li></ul></div>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>Cordages tendineux = m3a les valves <b>AV</b> (tricuspide/mitrale), machi les sigmoïdes.</li><li>OD katsta9bel 7tta <b>sinus coronaire</b>.</li><li>Fosse ovale f septum <b>interauriculaire</b>.</li></ul></div>
+    <details class="check"><summary>Chkoun l'ventricule li paroi dyalo 3erda kter, o 3lach?</summary><div>VG: kaydfe3 ddem f grande circulation (jism kaml), résistance kbira. VD ghir l poumons.</div></details>
+  </div>
+</article>
+
+<article class="chap" id="c4">
+  <header><span class="slides">Diapos 10–12</span><h2>4 · Trajet du sang : petite et grande circulation</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s03.jpg" aria-label="Kebber tswira diapo 3"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s03.jpg" alt="Diapo 3" loading="lazy"></button><figcaption><span>Double circulation: lfo9 poumons (petite), lte7t jism (grande). Lazre9 = pauvre en O₂, l7mer = riche.</span><span class="dn">Diapo 3 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s11.jpg" aria-label="Kebber tswira diapo 11"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s11.jpg" alt="Diapo 11" loading="lazy"></button><figcaption><span>Petite circulation: tronc pulmonaire → artères pulmonaires → capillaires pulmonaires → veines pulmonaires → OG.</span><span class="dn">Diapo 11 · clicki bach tkebber</span></figcaption></figure></div>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 640 330" role="img" aria-label="Schéma de la double circulation">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="var(--muted)"/></marker></defs>
+        <rect x="220" y="12" width="200" height="52" rx="10" fill="var(--soft)" stroke="var(--line)"/>
+        <text x="320" y="36" text-anchor="middle" font-family="var(--f-body)" font-weight="700" font-size="15" fill="var(--ink)">Poumons</text>
+        <text x="320" y="54" text-anchor="middle" font-family="var(--f-mono)" font-size="11" fill="var(--muted)">capillaires pulmonaires: O₂ entre, CO₂ sort</text>
+        <rect x="220" y="266" width="200" height="52" rx="10" fill="var(--soft)" stroke="var(--line)"/>
+        <text x="320" y="290" text-anchor="middle" font-family="var(--f-body)" font-weight="700" font-size="15" fill="var(--ink)">Organes / tissus</text>
+        <text x="320" y="308" text-anchor="middle" font-family="var(--f-mono)" font-size="11" fill="var(--muted)">capillaires: O₂ sort, CO₂ entre</text>
+        <rect x="190" y="110" width="120" height="56" rx="8" fill="var(--ven-soft)" stroke="var(--ven)"/>
+        <text x="250" y="143" text-anchor="middle" font-family="var(--f-display)" font-weight="700" font-size="20" fill="var(--ven)">OD</text>
+        <rect x="190" y="176" width="120" height="66" rx="8" fill="var(--ven-soft)" stroke="var(--ven)"/>
+        <text x="250" y="214" text-anchor="middle" font-family="var(--f-display)" font-weight="700" font-size="20" fill="var(--ven)">VD</text>
+        <rect x="330" y="110" width="120" height="56" rx="8" fill="var(--art-soft)" stroke="var(--art)"/>
+        <text x="390" y="143" text-anchor="middle" font-family="var(--f-display)" font-weight="700" font-size="20" fill="var(--art)">OG</text>
+        <rect x="330" y="176" width="120" height="66" rx="8" fill="var(--art-soft)" stroke="var(--art)"/>
+        <text x="390" y="214" text-anchor="middle" font-family="var(--f-display)" font-weight="700" font-size="20" fill="var(--art)">VG</text>
+        <text x="250" y="173" text-anchor="middle" font-family="var(--f-mono)" font-size="10" fill="var(--muted)">tricuspide</text>
+        <text x="390" y="173" text-anchor="middle" font-family="var(--f-mono)" font-size="10" fill="var(--muted)">mitrale</text>
+        <path d="M190 210 C120 210 120 40 214 40" fill="none" stroke="var(--ven)" stroke-width="2.5" marker-end="url(#ah)"/>
+        <text x="40" y="118" font-family="var(--f-mono)" font-size="11" fill="var(--ven)">valve pulmonaire</text>
+        <text x="40" y="134" font-family="var(--f-mono)" font-size="11" fill="var(--ven)">→ artères pulm.</text>
+        <text x="40" y="150" font-family="var(--f-mono)" font-size="11" fill="var(--ven)">(pauvre en O₂)</text>
+        <path d="M426 40 C520 40 520 138 456 138" fill="none" stroke="var(--art)" stroke-width="2.5" marker-end="url(#ah)"/>
+        <text x="500" y="76" font-family="var(--f-mono)" font-size="11" fill="var(--art)">veines pulm.</text>
+        <text x="500" y="92" font-family="var(--f-mono)" font-size="11" fill="var(--art)">(riche en O₂)</text>
+        <path d="M450 212 C560 212 560 292 426 292" fill="none" stroke="var(--art)" stroke-width="2.5" marker-end="url(#ah)"/>
+        <text x="520" y="248" font-family="var(--f-mono)" font-size="11" fill="var(--art)">valve aortique</text>
+        <text x="520" y="264" font-family="var(--f-mono)" font-size="11" fill="var(--art)">→ aorte</text>
+        <path d="M214 292 C100 292 100 138 184 138" fill="none" stroke="var(--ven)" stroke-width="2.5" marker-end="url(#ah)"/>
+        <text x="20" y="240" font-family="var(--f-mono)" font-size="11" fill="var(--ven)">veines caves</text>
+        <text x="20" y="256" font-family="var(--f-mono)" font-size="11" fill="var(--ven)">(pauvre en O₂)</text>
+      </svg>
+    </div>
+    <figcaption>Fo9 = petite circulation · lte7t = grande circulation · bleu/rouge = degré d'oxygénation</figcaption>
+  </figure>
+  <div class="prose" style="margin-top:16px">
+    <p><b>Trajet kaml f 4 étapes</b> (l'prof 9al: 3awdo b sotek men veines caves):</p>
+    <ul>
+      <li><b>1.</b> Veines caves → <b>OD</b> → tricuspide → <b>VD</b></li>
+      <li><b>2.</b> Valve pulmonaire → tronc pulmonaire → artères pulmonaires → <b>poumons</b></li>
+      <li><b>3.</b> Veines pulmonaires → <b>OG</b> → mitrale → <b>VG</b></li>
+      <li><b>4.</b> Valve aortique → <b>aorte</b> → organes → veines caves (o 3awd)</li>
+    </ul>
+    <p><b>Petite circulation (pulmonaire):</b> VD → poumons → OG. Ddem kayji pauvre en O₂, f capillaires pulmonaires kayakhod O₂ o kaylo7 CO₂, o kayrje3 riche en O₂ l OG.</p>
+    <p><b>Grande circulation (systémique):</b> VG → aorte → artères → artérioles → capillaires (échanges m3a les cellules) → veinules → veines → OD.</p>
+    <p class="art">Règle d'or: smiyt "artère" wla "veine" katdepend 3la direction dyal ddem (khrej men l'cœur = artère, rje3 l'cœur = veine), machi 3la oxygène.</p>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="order" id="orderGame">
+      <div class="box blurt" style="max-width:none"><h4>Exercice: rtteb trajet ddem</h4>Clicki 3la les étapes b tartib s7i7, bda men veines caves.</div>
+      <div class="answer" id="ogAns" aria-label="Ta réponse"></div>
+      <div class="pool" id="ogPool" aria-label="Étapes"></div>
+      <div class="row"><button class="btn primary" id="ogCheck">Vérifier</button><button class="btn" id="ogReset">3awd</button><span class="msg" id="ogMsg"></span></div>
+    </div>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li><b>Artères pulmonaires = sang pauvre en O₂.</b> Veines pulmonaires = sang riche en O₂. (L'exception l'kbira!)</li><li>Petite circulation katsala f <b>OG</b>, machi OD.</li><li>Grande circulation katbda men <b>VG</b>.</li></ul></div>
+  </div>
+</article>
+
+<article class="chap" id="c5">
+  <header><span class="slides">Diapos 13–14</span><h2>5 · Circulation coronaire</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s13.jpg" aria-label="Kebber tswira diapo 13"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s13.jpg" alt="Diapo 13" loading="lazy"></button><figcaption><span>Coronaires droite o gauche kaykhrjo men aorte ascendante. IVA f sillon antérieur, circonflexe kaddor l lor. Sinus coronaire f face postérieure.</span><span class="dn">Diapo 13 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s14.jpg" aria-label="Kebber tswira diapo 14"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s14.jpg" alt="Diapo 14" loading="lazy"></button><figcaption><span>Coronarographie 7a9i9iya: les flèches kayweriw les sténoses.</span><span class="dn">Diapo 14 · clicki bach tkebber</span></figcaption></figure></div>
+  <div class="prose">
+    <p>L'myocarde 7tta howa khasso O₂. Ma kayaklch men ddem li f les cavités: 3ndo les artères dyalo, les <span class="term">coronaires</span>.</p>
+    <ul>
+      <li>Coronaire <b>droite</b> o coronaire <b>gauche</b> kaykhrjo men l'<span class="art">aorte ascendante</span> (juste fo9 valve aortique).</li>
+      <li>Coronaire gauche kat9sem l: <span class="term">IVA</span> (artère interventriculaire antérieure, f sillon interventriculaire antérieur) o <span class="term">circonflexe</span> (kaddor f sillon coronaire l'isser).</li>
+      <li>Coronaire droite kat3ti <b>artère marginale</b> o ghaliban <b>interventriculaire postérieure</b>.</li>
+      <li>Les veines (grande, moyenne, petite veine cardiaque) kaytjm3o f <span class="term">sinus coronaire</span> (face postérieure) li kaykhwi l'akthar dyal ddem veineux f <b>OD</b>.</li>
+    </ul>
+    <p><b>Coronarographie:</b> produit de contraste + rayons X bach ybano les coronaires, o kanqelbo 3la des <b>rétrécissements (sténoses)</b>. Ila tsddat artère: <span class="term">ischémie</span> (O₂ ma kafich) → ila twwlat: <span class="term">infarctus</span> (nécrose dyal myocarde). Tswira bo7dha machi diagnostic.</p>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>Coronaires men <b>aorte ascendante</b>, machi men crosse wla men VG.</li><li>Sinus coronaire → <b>OD</b>, machi OG.</li><li>IVA o circonflexe = branches dyal coronaire <b>gauche</b>.</li></ul></div>
+  </div>
+</article>
+
+<article class="chap" id="c6">
+  <header><span class="slides">Diapos 15–16</span><h2>6 · Muscle cardiaque et système cardionecteur</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s15.jpg" aria-label="Kebber tswira diapo 15"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s15.jpg" alt="Diapo 15" loading="lazy"></button><figcaption><span>Cardiomyocytes o disques intercalaires (desmosomes + jonctions communicantes).</span><span class="dn">Diapo 15 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s16.jpg" aria-label="Kebber tswira diapo 16"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s16.jpg" alt="Diapo 16" loading="lazy"></button><figcaption><span>Système cardionecteur: nœud sinusal f OD → NAV → His → branches → Purkinje.</span><span class="dn">Diapo 16 · clicki bach tkebber</span></figcaption></figure></div>
+  <div class="prose">
+    <p>Les <span class="term">cardiomyocytes</span>: cellules musculaires <b>striées</b> (b7al muscle squelettique f chkel) walakin contraction <b>involontaire</b> (b7al muscle lisse f l'contrôle). 3ndhom bzzaf d <b>mitochondries</b> (7it khdamin bla raha).</p>
+    <p>Kayrbethom les <span class="term">disques intercalaires</span>, fihom 2 7wayej:</p>
+    <ul>
+      <li><span class="term">Desmosomes</span>: attache mécanique (ma ytfr9och mli kaytqbdo).</li>
+      <li><span class="term">Jonctions communicantes</span> (gap junctions): l'courant électrique kaydouz men cellule l cellule → l'cœur kaytqbbed b7al wa7ed.</li>
+    </ul>
+    <p><b>Système cardionecteur</b> = les "fils électriques" dyal l'cœur:</p>
+  </div>
+  <div class="chain" style="margin:14px 0">
+    <span>Nœud sinusal</span><i>→</i><span>Voies internodales</span><i>→</i><span class="slow">Nœud AV (ralentit)</span><i>→</i><span>Faisceau de His</span><i>→</i><span>Branches D et G</span><i>→</i><span>Fibres de Purkinje</span>
+  </div>
+  <div class="prose">
+    <ul>
+      <li><span class="term">Nœud sinusal</span> (f l'paroi dyal OD): howa li <b>kaybda</b> l'influx normalement, "pacemaker".</li>
+      <li><span class="term">Nœud atrioventriculaire</span>: kay<b>ralentir</b> l'transmission. 3lach? Bach les oreillettes ykemmlo yfergho ddem f les ventricules 9bel ma ytqbdo.</li>
+      <li><span class="term">Faisceau de His</span> → <b>branches droite et gauche</b> f septum → <span class="term">fibres de Purkinje</span> kayfer9o l'influx f les ventricules.</li>
+    </ul>
+    <p class="art">Activation dyal les oreillettes kadji 9bel les ventricules.</p>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="box tip"><h4>Bach t3e9el</h4><ul><li>Tartib b7al tram: <b>S</b>inus → <b>A</b>V → <b>H</b>is → <b>B</b>ranches → <b>P</b>urkinje. "<b>SAHBP</b>": "Sa7bi P".</li></ul></div>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>Li kaybda = nœud <b>sinusal</b>. Li kayralentir = nœud <b>AV</b>. Bzzaf kaykhltohom.</li><li>Striées + involontaires (machi volontaires).</li></ul></div>
+  </div>
+</article>
+
+<article class="chap" id="c7">
+  <header><span class="slides">Diapos 17–18</span><h2>7 · ECG : ondes, électrodes, dérivations</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s17.jpg" aria-label="Kebber tswira diapo 17"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s17.jpg" alt="Diapo 17" loading="lazy"></button><figcaption><span>Tracé ECG normal: P, QRS, T, intervalles PR o QT.</span><span class="dn">Diapo 17 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s18.jpg" aria-label="Kebber tswira diapo 18"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s18.jpg" alt="Diapo 18" loading="lazy"></button><figcaption><span>Placement dyal les électrodes: 6 précordiales f sder o 4 f les membres.</span><span class="dn">Diapo 18 · clicki bach tkebber</span></figcaption></figure></div>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 640 220" role="img" aria-label="Tracé ECG annoté">
+        <path d="M20 150 H110 q22 -30 44 0 H200 l8 10 l14 -110 l14 128 l8 -28 H300 q40 -48 80 0 H620" fill="none" stroke="var(--trace)" stroke-width="3" stroke-linejoin="round"/>
+        <text x="132" y="108" text-anchor="middle" font-family="var(--f-display)" font-weight="700" font-size="20" fill="var(--ink)">P</text>
+        <text x="222" y="34" text-anchor="middle" font-family="var(--f-display)" font-weight="700" font-size="20" fill="var(--ink)">QRS</text>
+        <text x="340" y="88" text-anchor="middle" font-family="var(--f-display)" font-weight="700" font-size="20" fill="var(--ink)">T</text>
+        <line x1="110" y1="190" x2="200" y2="190" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="110" y1="184" x2="110" y2="196" stroke="var(--muted)"/><line x1="200" y1="184" x2="200" y2="196" stroke="var(--muted)"/>
+        <text x="155" y="210" text-anchor="middle" font-family="var(--f-mono)" font-size="11" fill="var(--muted)">intervalle PR</text>
+        <line x1="200" y1="174" x2="380" y2="174" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="300" y="168" text-anchor="middle" font-family="var(--f-mono)" font-size="11" fill="var(--muted)">intervalle QT</text>
+        <text x="270" y="140" text-anchor="middle" font-family="var(--f-mono)" font-size="11" fill="var(--muted)">ST</text>
+        <text x="470" y="60" font-family="var(--f-mono)" font-size="12" fill="var(--muted)">P = dépol. oreillettes</text>
+        <text x="470" y="80" font-family="var(--f-mono)" font-size="12" fill="var(--muted)">QRS = dépol. ventricules</text>
+        <text x="470" y="100" font-family="var(--f-mono)" font-size="12" fill="var(--muted)">T = repol. ventricules</text>
+      </svg>
+    </div>
+    <figcaption>Activité électrique → 3ad réponse mécanique (contraction)</figcaption>
+  </figure>
+  <div class="prose" style="margin-top:16px">
+    <p>L'<span class="term">ECG</span> kaysajjel l'activité <b>électrique</b> dyal l'cœur men 3la jeld.</p>
+    <ul>
+      <li><span class="term">Onde P</span>: <b>dépolarisation des oreillettes</b>.</li>
+      <li><span class="term">Complexe QRS</span>: <b>dépolarisation des ventricules</b>. Kbir 7it masse dyal ventricules kbira. (Repolarisation dyal les oreillettes katkhtbe3 f west QRS, ma katbanch.)</li>
+      <li><span class="term">Onde T</span>: <b>repolarisation des ventricules</b>.</li>
+      <li><span class="term">Intervalle PR</span>: wa9t li kaydouz l'influx men oreillettes l ventricules (fih retard dyal NAV).</li>
+    </ul>
+    <p><b>Électrodes et dérivations:</b> ECG standard = <b>10 électrodes</b> → <b>12 dérivations</b>.</p>
+    <ul>
+      <li><b>4 électrodes</b> f les membres (2 dra3at, 2 rjlin).</li>
+      <li><b>6 électrodes précordiales</b> f sder (V1 → V6).</li>
+      <li><span class="term">Électrode</span> = capteur (l'7aja li katlsse9). <span class="term">Dérivation</span> = point de vue électrique (zawiya li kanchoufo menha l'cœur).</li>
+      <li>Repérage mzyan + jeld préparée = erreurs 9lal.</li>
+    </ul>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="box nurse"><h4>Bonus infirmier (machi f diapos, mais mfid)</h4><ul><li>V1: 4e EIC droit, bord du sternum · V2: 4e EIC gauche, bord du sternum · V3: bin V2 o V4 · V4: 5e EIC gauche, ligne médio-claviculaire · V5: ligne axillaire antérieure · V6: ligne axillaire moyenne (nefs l'niveau dyal V4).</li></ul></div>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>Onde T = <b>repolarisation</b> ventriculaire, machi dépolarisation.</li><li>10 électrodes ≠ 12 dérivations. Ma tkhltch "12 électrodes".</li><li>ECG = électrique, machi contraction mécanique.</li></ul></div>
+  </div>
+</article>
+
+<article class="chap" id="c8">
+  <header><span class="slides">Diapos 19–23</span><h2>8 · Cycle cardiaque, valves et bruits</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s19.jpg" aria-label="Kebber tswira diapo 19"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s19.jpg" alt="Diapo 19" loading="lazy"></button><figcaption><span>Le cycle cardiaque kaml m3a l'ECG.</span><span class="dn">Diapo 19 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s20.jpg" aria-label="Kebber tswira diapo 20"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s20.jpg" alt="Diapo 20" loading="lazy"></button><figcaption><span>Remplissage: valves AV ouvertes, sigmoïdes fermées, cordages relâchés.</span><span class="dn">Diapo 20 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s21.jpg" aria-label="Kebber tswira diapo 21"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s21.jpg" alt="Diapo 21" loading="lazy"></button><figcaption><span>Éjection: AV fermées, sigmoïdes ouvertes, cordages tendus, papillaires contractés.</span><span class="dn">Diapo 21 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s23.jpg" aria-label="Kebber tswira diapo 23"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s23.jpg" alt="Diapo 23" loading="lazy"></button><figcaption><span>Les 4 foyers d'auscultation 3la sder.</span><span class="dn">Diapo 23 · clicki bach tkebber</span></figcaption></figure></div>
+  <div class="prose">
+    <p><span class="term">Systole</span> = contraction. <span class="term">Diastole</span> = relaxation o remplissage. <span class="term">Cycle cardiaque</span> = battement kaml. Mli kan9olo "systole" bla tafsil, ghaliban kan9ssdo l'ventricules.</p>
+    <p><b>L'9a3ida li kat7el kolchi:</b> les valves kat7ell o katsedd <b>b la pression</b>. Ddem dima kaymchi men pression kbira l pression sghira. Ila pression lfo9 kbira → valve kat7ell; ila t9lbat → katsedd.</p>
+  </div>
+  <div class="tbl" style="margin-top:14px">
+    <table>
+      <thead><tr><th>Phase</th><th>Valves AV<br>(mitrale, tricuspide)</th><th>Sigmoïdes<br>(aortique, pulmonaire)</th><th>Chno kaywe9e3</th></tr></thead>
+      <tbody>
+        <tr><td><b>Remplissage ventriculaire</b> (diastole)</td><td class="open">Ouvertes</td><td class="shut">Fermées</td><td>P oreillettes &gt; P ventricules. F lekher, contraction auriculaire katkemmel remplissage.</td></tr>
+        <tr><td><b>Contraction isovolumétrique</b> (début systole)</td><td class="shut">Fermées → <b>B1</b></td><td class="shut">Fermées</td><td>Kolchi msdoud. Pression kattl3, volume ma kaytbddelch.</td></tr>
+        <tr><td><b>Éjection ventriculaire</b></td><td class="shut">Fermées</td><td class="open">Ouvertes</td><td>P ventricules &gt; P aorte/tronc pulm. Cordages tendus, papillaires contractés.</td></tr>
+        <tr><td><b>Relaxation isovolumétrique</b> (début diastole)</td><td class="shut">Fermées</td><td class="shut">Fermées → <b>B2</b></td><td>Ventricules rkhaw, pression kathbet, ddem bgha yrje3 → sigmoïdes ytsddo.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose" style="margin-top:16px">
+    <p><b>Les bruits du cœur</b> ("toum-tak"):</p>
+    <ul>
+      <li><span class="term">B1</span> ("toum"): fermeture <b>mitrale + tricuspide</b> → début <b>systole</b> ventriculaire.</li>
+      <li><span class="term">B2</span> ("tak"): fermeture <b>aortique + pulmonaire</b> → début <b>diastole</b> ventriculaire.</li>
+      <li><span class="term">Souffle</span>: écoulement <b>turbulent</b>. Khasso interprétation clinique.</li>
+    </ul>
+  </div>
+  <div class="tbl" style="margin-top:14px">
+    <table>
+      <thead><tr><th>Foyer d'auscultation</th><th>Blasa</th></tr></thead>
+      <tbody>
+        <tr><td><b>Aortique</b></td><td>2e espace intercostal <b>droit</b>, 7da sternum</td></tr>
+        <tr><td><b>Pulmonaire</b></td><td>2e espace intercostal <b>gauche</b></td></tr>
+        <tr><td><b>Tricuspide</b></td><td>Bord inférieur gauche du sternum</td></tr>
+        <tr><td><b>Mitral</b></td><td>Région de l'apex, habituellement 5e espace gauche</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="box tip"><h4>Bach t3e9el</h4><ul><li>Foyers men lfo9 limen o nzel: <b>A → P → T → M</b> ("<b>A</b>hmed <b>P</b>ar<b>T</b> l <b>M</b>arrakech"). A o P f 2e EIC, T o M lte7t.</li><li>B1 = valves li <b>bin</b> oreillette o ventricule. B2 = valves dyal les <b>artères</b>.</li></ul></div>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>F début contraction: <b>ga3 les valves msdodin</b> chwiya.</li><li>Les foyers ≠ position anatomique exacte dyal les valves.</li><li>Foyer aortique = <b>droit</b>, pulmonaire = gauche (aorte kat5rej o tmil l limen).</li></ul></div>
+    <details class="check"><summary>F l'éjection, chno l'état dyal les cordages tendineux o les muscles papillaires?</summary><div>Cordages <b>tendus</b>, muscles papillaires <b>contractés</b> → kayman3o valves AV mn t9leb l oreillettes. F remplissage: relâchés.</div></details>
+  </div>
+</article>
+
+<article class="chap" id="c9">
+  <header><span class="slides">Diapo 24</span><h2>9 · Débit cardiaque</h2></header>
+  <div class="prose">
+    <p class="art" style="font-size:20px;font-family:var(--f-display)">DC = FC × VES</p>
+    <ul>
+      <li><span class="term">FC</span> (fréquence cardiaque): battements/minute.</li>
+      <li><span class="term">VES</span> (volume d'éjection systolique): volume li kaykhrej f kol battement (mL).</li>
+      <li>Exemple dyal l'cours: 70/min × 70 mL = 4 900 mL/min = <b>4,9 L/min</b> (adulte au repos).</li>
+    </ul>
+    <p>Bach t7awwel mL → L: 9sem 3la 1000.</p>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <details class="check"><summary>FC = 80/min, VES = 60 mL. DC = ?</summary><div>80 × 60 = 4 800 mL/min = <b>4,8 L/min</b>.</div></details>
+    <details class="check"><summary>DC = 5 L/min, FC = 100/min. VES = ?</summary><div>VES = DC / FC = 5000 / 100 = <b>50 mL</b>.</div></details>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>Les unités: ila l'jawab b mL/min o les options b L/min, 7awwel.</li></ul></div>
+  </div>
+</article>
+
+<article class="chap" id="c10">
+  <header><span class="slides">Diapos 25–26</span><h2>10 · Artères, veines, capillaires et retour veineux</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s25.jpg" aria-label="Kebber tswira diapo 25"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s25.jpg" alt="Diapo 25" loading="lazy"></button><figcaption><span>Artère (paroi 3erda, média kbira) vs veine (paroi r9i9a, lumière kbira). Nefs les 3 tuniques.</span><span class="dn">Diapo 25 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s26.jpg" aria-label="Kebber tswira diapo 26"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s26.jpg" alt="Diapo 26" loading="lazy"></button><figcaption><span>Pompe musculaire: les muscles kayzyro l'veine, valvule lfo9 kat7ell, li lte7t katsedd.</span><span class="dn">Diapo 26 · clicki bach tkebber</span></figcaption></figure></div>
+  <div class="prose">
+    <ul>
+      <li><span class="term">Artères</span>: kayb3do ddem 3la l'cœur. Paroi <b>3erda</b> (média musculaire o élastique kbira, limitantes élastiques) 7it pression 3alya.</li>
+      <li><span class="term">Artérioles</span>: kayreglo <b>résistance</b> o distribution dyal débit (kaydi9o wla kaytwesse3o).</li>
+      <li><span class="term">Capillaires</span>: paroi <b>r9i9a</b> (endothélium) → mkhdomin l les <b>échanges</b>.</li>
+      <li><span class="term">Veinules et veines</span>: kayrj3o ddem l l'cœur. Paroi r9i9a, lumière kbira, pression nai9sa.</li>
+    </ul>
+    <p><b>3 tuniques</b> (men dakhel l barra): <span class="term">intima</span> (endothélium) → <span class="term">média</span> (muscle lisse) → <span class="term">adventice</span> (tissu conjonctif, vasa vasorum, nerfs vasculaires).</p>
+    <p><b>Retour veineux</b>: f les rjlin, ddem khasso yt3 lfo9 3ks jadibiya. Chkoun li kay3awno?</p>
+    <ul>
+      <li><span class="term">Valvules</span> f les veines: kaykhelliw ddem ymchi ghir l l'cœur.</li>
+      <li><span class="term">Pompe musculaire</span>: les muscles mli kaytqbdo kayzyro les veines (valvule lfo9 kat7ell, li lte7t katsedd).</li>
+      <li><b>Mouvements respiratoires</b> 7tta homa kay3awno.</li>
+      <li><b>Immobilité prolongée</b> → <span class="art">stase veineuse</span> (ddem kaywe9ef).</li>
+    </ul>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="box nurse"><h4>Lien infirmier</h4><ul><li>Malade m9ayed f l'frach mdda twila: stase → risque thrombose veineuse. 3lach kanchej3o l'mobilisation précoce o l'7araka dyal rjlin.</li></ul></div>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>Valvules f les <b>veines</b> (machi f les artères).</li><li>Li kayreglo résistance = les <b>artérioles</b>, machi capillaires.</li></ul></div>
+  </div>
+</article>
+
+<article class="chap" id="c11">
+  <header><span class="slides">Diapos 27–31</span><h2>11 · Aorte, artères et veines principales</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s27.jpg" aria-label="Kebber tswira diapo 27"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s27.jpg" alt="Diapo 27" loading="lazy"></button><figcaption><span>L'aorte: ascendante → crosse (3 branches) → thoracique → abdominale.</span><span class="dn">Diapo 27 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s28.jpg" aria-label="Kebber tswira diapo 28"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s28.jpg" alt="Diapo 28" loading="lazy"></button><figcaption><span>Les artères systémiques principales.</span><span class="dn">Diapo 28 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s29.jpg" aria-label="Kebber tswira diapo 29"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s29.jpg" alt="Diapo 29" loading="lazy"></button><figcaption><span>Les veines systémiques principales.</span><span class="dn">Diapo 29 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s30.jpg" aria-label="Kebber tswira diapo 30"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s30.jpg" alt="Diapo 30" loading="lazy"></button><figcaption><span>Veines du membre supérieur: céphalique (latérale), basilique (médiale), médiane du coude.</span><span class="dn">Diapo 30 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s31.jpg" aria-label="Kebber tswira diapo 31"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s31.jpg" alt="Diapo 31" loading="lazy"></button><figcaption><span>Veines du membre inférieur: grande saphène (médiale), petite saphène (postérieure), réseau profond.</span><span class="dn">Diapo 31 · clicki bach tkebber</span></figcaption></figure></div>
+  <div class="prose">
+    <p><b>L'aorte f 4 tranches:</b></p>
+    <ul>
+      <li><span class="term">Aorte ascendante</span>: menha kaykhrjo les <b>coronaires</b>.</li>
+      <li><span class="term">Crosse aortique</span>: branches l rass, l'3non o les membres sup.: <b>tronc brachiocéphalique</b> (→ carotide commune D + subclavière D), <b>carotide commune G</b>, <b>subclavière G</b>.</li>
+      <li><span class="term">Aorte thoracique</span> → katdouz diaphragme → <span class="term">aorte abdominale</span> (branches viscérales o pariétales: tronc cœliaque, mésentériques, rénales...).</li>
+      <li><span class="term">Bifurcation iliaque</span>: iliaques communes → bassin o membres inférieurs.</li>
+    </ul>
+    <p><b>Les artères principales</b> (smiythom katbddel 3la 7sab région li kaydouzo menha):</p>
+    <ul>
+      <li>Rass o 3non: <span class="term">carotides</span>.</li>
+      <li>Membre sup.: subclavière → axillaire → brachiale → <b>radiale</b> (jiht l'pouce) o <b>ulnaire</b>.</li>
+      <li>Membre inf.: iliaque externe → <b>fémorale</b> → <b>poplitée</b> (mor rkba) → tibiales → <b>dorsale du pied</b>.</li>
+    </ul>
+    <p><b>Les veines principales:</b></p>
+    <ul>
+      <li><span class="term">VCS</span>: retour men l'partie supérieure. <span class="term">VCI</span>: men l'partie inférieure.</li>
+      <li><span class="term">Jugulaires</span> (interne o externe): drainage rass o 3non.</li>
+      <li>Les membres 3ndhom 2 réseaux: <b>superficiel</b> o <b>profond</b>, mrbotin b <b>veines perforantes</b>.</li>
+    </ul>
+  </div>
+  <div class="tbl" style="margin-top:14px">
+    <table>
+      <thead><tr><th>Veine</th><th>Réseau</th><th>Trajet</th></tr></thead>
+      <tbody>
+        <tr><td><b>Céphalique</b></td><td>Superficiel (bra)</td><td>Plutôt <b>latéral</b> (jiht l'pouce)</td></tr>
+        <tr><td><b>Basilique</b></td><td>Superficiel (bra)</td><td>Plutôt <b>médial</b></td></tr>
+        <tr><td><b>Médiane du coude</b></td><td>Superficiel</td><td>Katrbet bin les réseaux superficiels (blasa mchhoura dyal prélèvement)</td></tr>
+        <tr><td><b>Grande saphène</b></td><td>Superficiel (rjel)</td><td><b>Médial</b></td></tr>
+        <tr><td><b>Petite saphène</b></td><td>Superficiel (rjel)</td><td><b>Postérieur</b> dyal jambe</td></tr>
+        <tr><td><b>Tibiales, poplitée, fémorale</b></td><td>Profond (rjel)</td><td>Kaytb3o les artères</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="box tip"><h4>Bach t3e9el</h4><ul><li><b>Cé</b>phalique = <b>Cô</b>té pouce (latéral). <b>Ba</b>silique = <b>Ba</b>s/dedans (médial).</li><li>Branches dyal crosse men limen l l'isser: "<b>T</b>ab<b>C</b>a<b>S</b>" = Tronc brachiocéphalique, Carotide G, Subclavière G.</li></ul></div>
+    <div class="box nurse"><h4>Lien infirmier</h4><ul><li>Repérage veineux: palpation + contexte de soin. Les variantes anatomiques bzzaf.</li><li><b>Thrombose profonde</b> (réseau profond) o <b>varices</b> (réseau superficiel) machi nefs l'atteinte.</li></ul></div>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>Carotide commune <b>droite</b> o subclavière droite ma kaykhrjoch direct men crosse: kaykhrjo men tronc brachiocéphalique.</li><li>Grande saphène = <b>médiale</b>; petite saphène = postérieure.</li></ul></div>
+  </div>
+</article>
+
+<article class="chap" id="c12">
+  <header><span class="slides">Diapos 32–35</span><h2>12 · Pression artérielle, pouls et liens avec la pathologie</h2></header><div class="pics"><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s33.jpg" aria-label="Kebber tswira diapo 33"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s33.jpg" alt="Diapo 33" loading="lazy"></button><figcaption><span>Les sites dyal l'pouls.</span><span class="dn">Diapo 33 · clicki bach tkebber</span></figcaption></figure><figure class="pic"><button class="zoom" data-src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s34.jpg" aria-label="Kebber tswira diapo 34"><img src="https://cdn.jsdelivr.net/gh/boujaadahicham055-source/test-claude@cardio/cardio/img/s34.jpg" alt="Diapo 34" loading="lazy"></button><figcaption><span>Mesure dyal PA: awwel bruit de Korotkoff = PAS, akher bruit = PAD.</span><span class="dn">Diapo 34 · clicki bach tkebber</span></figcaption></figure></div>
+  <div class="prose">
+    <p><span class="term">Pression artérielle</span> (PA) = pression dyal ddem f les artères.</p>
+    <ul>
+      <li><span class="term">PAS</span> (systolique) = <b>maximale</b>. <span class="term">PAD</span> (diastolique) = <b>minimale</b>.</li>
+      <li>120/80 mmHg → PAS 120, PAD 80.</li>
+      <li>PA katdepend 3la <b>débit cardiaque</b> o les <b>résistances</b>.</li>
+    </ul>
+    <p><span class="term">Pouls</span> = onde de pression artérielle. Kanwesfoh b 3 7wayej: <b>fréquence, régularité, amplitude</b>. Adulte au repos: souvent <b>60–100/min</b>. Interpréter selon l'effort, les traitements o l'état clinique.</p>
+    <p>Les sites: temporal, carotidien, <b>radial</b> (l'akthar sta3mal), brachial, fémoral, poplité, tibial postérieur, pédieux (dorsale du pied).</p>
+    <p><b>Mesure dyal PA</b> (diapo 34):</p>
+    <ul>
+      <li>Patient au <b>repos</b>, <b>ma yhdrch</b> f wa9t l'mesure.</li>
+      <li>Brassard <b>adapté</b> l dra3, m7tot 3la <b>jeld</b> (machi fo9 l7wayej).</li>
+      <li>Dra3 msnod 3la <b>hauteur du cœur</b>.</li>
+      <li><b>3awed</b> les mesures o kteb les conditions.</li>
+      <li><span class="term">Bruits de Korotkoff</span>: mli kanrkhiw brassard, <b>awwel bruit = PAS</b>, <b>akher bruit (disparition) = PAD</b>.</li>
+    </ul>
+    <p class="art">Valeur wa7da isolée ma katkfich bach ndiro diagnostic d'HTA.</p>
+    <p><b>Liens avec la pathologie:</b></p>
+    <ul>
+      <li><span class="term">Ischémie</span>: apport sanguin <b>insuffisant</b> l les besoins dyal tissu.</li>
+      <li><span class="term">Infarctus</span>: <b>nécrose</b> b sabab ischémie <b>prolongée</b>.</li>
+      <li><span class="term">Insuffisance cardiaque</span>: l'cœur ma kaykfich l les besoins, wla kaykfi ghir b pressions 3alya.</li>
+      <li><span class="term">Thrombose veineuse</span>: thrombus (jelta) kayttkoun f veine.</li>
+    </ul>
+  </div>
+  <div class="stack" style="margin-top:16px">
+    <div class="box nurse"><h4>Alerte infirmière</h4><ul><li><b>Douleur thoracique aiguë</b> wla <b>dyspnée brutale</b> → évaluation <b>urgente</b>.</li></ul></div>
+    <div class="box trap"><h4>Pièges QCM</h4><ul><li>Ischémie ≠ infarctus: ischémie = na9s O₂ (réversible), infarctus = nécrose (mout dyal tissu).</li><li>Premier bruit Korotkoff = PAS (machi PAD).</li></ul></div>
+  </div>
+</article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ QCM ============ -->
+<section class="view" id="v-qcm" hidden>
+  <div id="qSetup" class="setup">
+    <div><h2 class="sec-title">QCM</h2><p class="sub">Questions b Français b7al l'exam, explications b Darija. Fihom "une seule réponse" o "plusieurs réponses" (kayn badge). Les erreurs kayt7efdo bach t3awdhom ghedda.</p></div>
+    <div class="modes">
+      <button class="mode hot" data-mode="exam"><b>Examen blanc</b><span>30 questions mkhltin men ga3 les chapitres</span></button>
+      <button class="mode" data-mode="all"><b>Kolchi</b><span id="mAll">Ga3 les questions, f désordre</span></button>
+      <button class="mode" data-mode="wrong" id="mWrongBtn"><b>Mes erreurs</b><span id="mWrong">0 question</span></button>
+    </div>
+    <div class="stack"><h3 style="font-size:18px">Par chapitre</h3><div class="chapchips" id="chapChips"></div></div>
+  </div>
+  <div id="qRun" class="qwrap" hidden>
+    <div class="qtop"><span id="qPos"></span><span id="qScore"></span><button class="btn" id="qQuit" style="padding:6px 12px;font-size:13px">Khrej</button></div>
+    <div class="bar"><i id="qBar"></i></div>
+    <div class="qcard">
+      <div class="row"><span class="pill" id="qChap"></span><span class="pill" id="qType"></span></div>
+      <h3 id="qText"></h3>
+      <div class="opts" id="qOpts"></div>
+      <div class="exp" id="qExp" hidden></div>
+      <div class="row"><button class="btn primary" id="qGo">Valider</button></div>
+    </div>
+  </div>
+  <div id="qEnd" class="qwrap result" hidden></div>
+</section>
+
+<!-- ============ CARTES ============ -->
+<section class="view" id="v-cartes" hidden>
+  <div class="flash">
+    <div><h2 class="sec-title">Flashcards</h2><p class="sub">Chouf l'question, jaweb f rassek (wla b sotek), 3ad 9leb l'carte. Ila ma 3reftihach, katrje3 lik b3d chwiya.</p></div>
+    <div class="row"><button class="btn" id="fAll">Ga3 les cartes</button><button class="btn" id="fHard">Ghir li ma 3reftahomch (<span id="fHardN">0</span>)</button></div>
+    <div class="qtop"><span id="fPos"></span><span id="fLeft"></span></div>
+    <div class="bar"><i id="fBar"></i></div>
+    <button class="fc" id="fc" aria-live="polite"></button>
+    <div class="row" id="fBtns" hidden><button class="btn" id="fNo">Ma 3reftahach, 3awdha</button><button class="btn primary" id="fYes">3reftha</button></div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">Images: OpenStax (CC BY 4.0) et Blausen Medical (CC BY 3.0), légendes françaises du cours. Contenu basé sur ton cours UM6 (35 diapos), lui-même tiré d'OpenStax <i>Anatomy and Physiology 2e</i>, ch. 19–20 (CC BY 4.0). Les cases cochées et tes erreurs restent dans ce navigateur seulement.</footer>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Tswira kbira"><div class="bar2"><span id="lbT"></span><span class="row" style="gap:8px"><button id="lbZ">Zoom</button><button id="lbX">Sedd</button></span></div><div class="sc" id="lbS"><img id="lbI" alt=""></div></div>
+<script>
+(function(){
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){const d=document.getElementById('dot');if(d)d.remove();}
+
+const CH=["Rôles et anatomie externe","Péricarde et paroi","Cavités et valves","Trajet du sang","Coronaires","Muscle et conduction","ECG","Cycle et bruits","Débit cardiaque","Vaisseaux et retour veineux","Aorte, artères, veines","PA, pouls, pathologie"];
+
+/* ---------- QCM bank: c=chapter (1-12), a=correct indices ---------- */
+const Q=[
+{c:1,q:"Le cœur est situé dans :",o:["Le médiastin, entre les deux poumons","La cavité pleurale gauche","La cavité abdominale, sous le diaphragme","Derrière la colonne vertébrale"],a:[0],e:"L'cœur f médiastin, bin 2 poumons. Les poumons homa li f cavités pleurales."},
+{c:1,q:"La pointe (apex) du cœur est orientée :",o:["Vers le haut et la droite","Vers le bas et la gauche","Vers le bas et la droite","Vers l'arrière"],a:[1],e:"Apex = lte7t o l'isser. L'base hiya li lfo9/lor."},
+{c:1,q:"La base du cœur correspond surtout à :",o:["Sa face postérieure","Sa pointe","Sa face diaphragmatique","Son bord droit"],a:[0],e:"Base = face postérieure, fin kaydkhlo les gros vaisseaux. Piège: base machi lte7t."},
+{c:1,q:"Le cœur repose sur :",o:["Le sternum","L'œsophage","Le diaphragme","La trachée"],a:[2],e:"Kayrta7 fo9 l'diaphragme, o kayn mor l'sternum."},
+{c:1,q:"Parmi ces vaisseaux, lesquels amènent le sang AU cœur ?",o:["Veine cave supérieure","Veine cave inférieure","Veines pulmonaires","Tronc pulmonaire","Aorte"],a:[0,1,2],m:1,e:"Vaisseaux d'entrée: veines caves (→ OD) o veines pulmonaires (→ OG). Aorte o tronc pulmonaire = sortie."},
+{c:1,q:"Sur une planche anatomique, « droite » et « gauche » désignent :",o:["La droite et la gauche de l'observateur","La droite et la gauche du patient","Le côté le plus oxygéné","Cela dépend de la vue"],a:[1],e:"Dima dyal l'patient. L'cœur droit kayban 3la l'isser dyal tswira."},
+{c:1,q:"Le ligament artériel relie :",o:["L'aorte et la veine cave supérieure","Le tronc/artère pulmonaire et la crosse aortique","Les deux oreillettes","Le VG et l'aorte"],a:[1],e:"Kayrbet artère pulmonaire m3a crosse aortique. Ba9i men l'canal artériel dyal l'fœtus."},
+{c:1,q:"Quels rôles assure le système cardiovasculaire ?",o:["Transport des gaz, nutriments, hormones et déchets","Participation à la thermorégulation","Participation à l'homéostasie","Production de la bile"],a:[0,1,2],m:1,e:"L'bile katdirha l'kebda, machi système cardiovasculaire."},
+
+{c:2,q:"La couche musculaire contractile de la paroi cardiaque est :",o:["L'épicarde","Le myocarde","L'endocarde","Le péricarde fibreux"],a:[1],e:"Myo = muscle. Myocarde howa li kaytqbbed."},
+{c:2,q:"L'épicarde correspond :",o:["Au péricarde fibreux","Au feuillet pariétal du péricarde séreux","Au feuillet viscéral du péricarde séreux","À l'endothélium des cavités"],a:[2],e:"Épicarde = feuillet viscéral (lasse9 f l'cœur). Pariétal lasse9 f l'fibreux."},
+{c:2,q:"Le liquide péricardique se trouve :",o:["Dans le myocarde","Dans la cavité péricardique","Dans les ventricules","Entre l'endocarde et le myocarde"],a:[1],e:"Bin feuillet pariétal o viscéral = cavité péricardique. Khdemto: na9es les frottements."},
+{c:2,q:"De l'extérieur vers l'intérieur, la paroi cardiaque comprend :",o:["Endocarde, myocarde, épicarde","Épicarde, myocarde, endocarde","Myocarde, épicarde, endocarde","Épicarde, endocarde, myocarde"],a:[1],e:"Épi (barra) → Myo (muscle) → Endo (dakhel)."},
+{c:2,q:"L'endocarde :",o:["Tapisse l'intérieur des cavités","Est la couche la plus épaisse","Entoure le péricarde fibreux","Contient le liquide péricardique"],a:[0],e:"Endocarde = revêtement interne dyal les cavités (o les valves)."},
+
+{c:3,q:"L'oreillette droite reçoit :",o:["Les veines pulmonaires","Le retour veineux systémique","Le sang de l'aorte","Le sang du VG"],a:[1],e:"OD = VCS + VCI + sinus coronaire = retour veineux systémique."},
+{c:3,q:"Le ventricule gauche éjecte le sang vers :",o:["Le tronc pulmonaire","L'oreillette gauche","L'aorte","Les veines caves"],a:[2],e:"VG → valve aortique → aorte → grande circulation."},
+{c:3,q:"La valve située entre l'OG et le VG est la valve :",o:["Tricuspide","Pulmonaire","Aortique","Mitrale"],a:[3],e:"Mitrale (bicuspide) = gauche. Tri = droite."},
+{c:3,q:"La valve située entre le VD et le tronc pulmonaire est la valve :",o:["Pulmonaire","Tricuspide","Mitrale","Aortique"],a:[0],e:"Sigmoïde smiytha 3la l'vaisseau li men b3dha: tronc pulmonaire → valve pulmonaire."},
+{c:3,q:"Quelles valves sont auriculo-ventriculaires ?",o:["Tricuspide","Mitrale","Aortique","Pulmonaire"],a:[0,1],m:1,e:"AV = bin oreillette o ventricule: tricuspide o mitrale. Aortique o pulmonaire = sigmoïdes."},
+{c:3,q:"Les cordages tendineux relient :",o:["Les valves sigmoïdes à l'aorte","Les valves AV aux muscles papillaires","Les deux oreillettes","Le nœud sinusal au nœud AV"],a:[1],e:"Cordages + muscles papillaires m3a les valves AV: kayman3o t9leb l oreillette."},
+{c:3,q:"La fosse ovale se situe :",o:["Dans le septum interventriculaire","Dans le septum interauriculaire","Dans la paroi du VG","À la base de l'aorte"],a:[1],e:"F septum interauriculaire. Ba9i men foramen ovale dyal l'fœtus."},
+{c:3,q:"Le rôle principal des valves cardiaques est de :",o:["Produire l'influx électrique","Limiter le reflux et imposer un sens de circulation","Oxygéner le sang","Nourrir le myocarde"],a:[1],e:"Valves = sens unique, ma kaykhelliwch ddem yrje3 lor."},
+{c:3,q:"Concernant les cavités cardiaques, cochez les propositions exactes :",o:["Le VG a la paroi la plus épaisse","L'OG reçoit les veines pulmonaires","Le VD éjecte vers l'aorte","Les septums séparent les cavités droites et gauches"],a:[0,1,3],m:1,e:"VD kaydfe3 l tronc pulmonaire, machi aorte."},
+
+{c:4,q:"Quel est l'ordre correct ?",o:["VC → OD → tricuspide → VD → valve pulmonaire → artères pulmonaires","VC → OD → mitrale → VD → valve aortique → aorte","VC → OG → tricuspide → VG → artères pulmonaires","Veines pulmonaires → OD → VD → aorte"],a:[0],e:"Étape 1 o 2 dyal l'trajet: veines caves, OD, tricuspide, VD, valve pulmonaire, artères pulmonaires."},
+{c:4,q:"Les artères pulmonaires transportent un sang :",o:["Riche en O₂","Pauvre en O₂","Riche en nutriments venant de l'intestin","Sans CO₂"],a:[1],e:"Piège classique! Artère = khrej men l'cœur. Artères pulmonaires = pauvre en O₂."},
+{c:4,q:"Les veines pulmonaires se jettent dans :",o:["L'oreillette droite","Le ventricule droit","L'oreillette gauche","L'aorte"],a:[2],e:"Veines pulmonaires (riche en O₂) → OG."},
+{c:4,q:"Le nom « artère » ou « veine » dépend :",o:["Du degré d'oxygénation du sang","De la couleur du vaisseau","Du sens du flux par rapport au cœur","Du diamètre du vaisseau"],a:[2],e:"Direction: kaykhrej men l'cœur = artère; kayrje3 = veine."},
+{c:4,q:"Concernant la petite circulation, cochez les propositions exactes :",o:["Elle commence au VD","Les échanges gazeux ont lieu dans les capillaires pulmonaires","Elle se termine dans l'OD","Les veines pulmonaires contiennent du sang riche en O₂"],a:[0,1,3],m:1,e:"Petite circulation katsala f OG, machi OD."},
+{c:4,q:"La grande circulation commence :",o:["Dans l'OD","Dans le VD","Dans le VG","Dans les capillaires pulmonaires"],a:[2],e:"VG → aorte → artères → tissus → veines → OD."},
+{c:4,q:"Dans les capillaires systémiques :",o:["L'O₂ et les nutriments sortent, le CO₂ et les déchets entrent","L'O₂ entre dans le sang","Le CO₂ quitte le sang","Il n'y a aucun échange"],a:[0],e:"F les tissus: ddem kay3ti O₂ o nutriments, o kayakhod CO₂ o déchets."},
+
+{c:5,q:"Les artères coronaires naissent :",o:["Du ventricule gauche","De l'aorte ascendante","De la crosse aortique","Du tronc pulmonaire"],a:[1],e:"Men aorte ascendante, juste fo9 valve aortique."},
+{c:5,q:"La coronaire gauche se divise notamment en :",o:["IVA et circonflexe","Marginale et IVP","Carotide et subclavière","Grande et petite veine cardiaque"],a:[0],e:"IVA (interventriculaire antérieure) + circonflexe."},
+{c:5,q:"Le sinus coronaire draine l'essentiel du sang veineux du cœur vers :",o:["L'oreillette gauche","L'oreillette droite","Le ventricule droit","La veine cave supérieure"],a:[1],e:"Sinus coronaire → OD."},
+{c:5,q:"Une coronarographie :",o:["Utilise un produit de contraste et des rayons X","Recherche notamment des rétrécissements artériels","Suffit à elle seule pour poser un diagnostic","Enregistre l'activité électrique du cœur"],a:[0,1],m:1,e:"Tswira bo7dha machi diagnostic. L'activité électrique = ECG."},
+{c:5,q:"Une obstruction coronaire prolongée peut provoquer :",o:["Une ischémie puis un infarctus du myocarde","Une thrombose veineuse profonde","Une hypertrophie des oreillettes","Un souffle d'origine pulmonaire"],a:[0],e:"Obstruction → ischémie → ila twwlat → infarctus (nécrose)."},
+{c:5,q:"Le rôle des artères coronaires est de :",o:["Apporter l'oxygène au myocarde","Ramener le sang des poumons","Distribuer le sang au cerveau","Drainer le sang du myocarde"],a:[0],e:"Coronaires = ma3icha dyal l'myocarde. Drainage = veines cardiaques/sinus coronaire."},
+
+{c:6,q:"Les cardiomyocytes sont des cellules :",o:["Lisses et involontaires","Striées et volontaires","Striées et involontaires","Lisses et volontaires"],a:[2],e:"Striées (chkel) + involontaires (contrôle)."},
+{c:6,q:"Les disques intercalaires contiennent :",o:["Des desmosomes","Des jonctions communicantes","Des valvules","Des fibres de Purkinje"],a:[0,1],m:1,e:"Desmosomes (attache) + jonctions communicantes (passage électrique)."},
+{c:6,q:"Le rôle des jonctions communicantes est de :",o:["Favoriser la propagation électrique entre cellules","Fixer le cœur au diaphragme","Stocker le calcium","Produire le liquide péricardique"],a:[0],e:"Gap junctions → l'influx kaydouz men cellule l cellule."},
+{c:6,q:"Normalement, l'influx cardiaque est déclenché par :",o:["Le nœud atrioventriculaire","Le faisceau de His","Le nœud sinusal","Les fibres de Purkinje"],a:[2],e:"Nœud sinusal = pacemaker."},
+{c:6,q:"La structure qui ralentit la transmission de l'influx est :",o:["Le nœud sinusal","Le nœud atrioventriculaire","La branche gauche","Le faisceau de Bachmann"],a:[1],e:"NAV kayralentir bach les oreillettes ykemmlo l'remplissage."},
+{c:6,q:"L'ordre de conduction normal est :",o:["NAV → nœud sinusal → His → Purkinje","Nœud sinusal → NAV → His → branches → Purkinje","Purkinje → His → NAV → nœud sinusal","Nœud sinusal → His → NAV → Purkinje"],a:[1],e:"SAHBP: Sinus, AV, His, Branches, Purkinje."},
+{c:6,q:"Cochez les propositions exactes :",o:["L'activation des oreillettes précède celle des ventricules","Les fibres de Purkinje distribuent l'influx aux ventricules","Le faisceau de His se divise en branches droite et gauche","Le nœud sinusal est situé dans le ventricule gauche"],a:[0,1,2],m:1,e:"Nœud sinusal f l'paroi dyal OD, machi f VG."},
+
+{c:7,q:"L'onde P correspond à :",o:["La dépolarisation des ventricules","La dépolarisation des oreillettes","La repolarisation des ventricules","La contraction des ventricules"],a:[1],e:"P = dépol. oreillettes."},
+{c:7,q:"Le complexe QRS correspond à :",o:["La dépolarisation des ventricules","La repolarisation des oreillettes uniquement","La dépolarisation des oreillettes","La fermeture des valves"],a:[0],e:"QRS = dépol. ventricules (repol. auriculaire mkhbbiya fih)."},
+{c:7,q:"L'onde T correspond à :",o:["La dépolarisation des ventricules","La repolarisation des ventricules","La dépolarisation des oreillettes","Le retard au nœud AV"],a:[1],e:"T = repolarisation ventriculaire. Piège mchhour."},
+{c:7,q:"Un ECG standard utilise :",o:["12 électrodes pour 10 dérivations","10 électrodes pour 12 dérivations","6 électrodes pour 12 dérivations","12 électrodes pour 12 dérivations"],a:[1],e:"10 électrodes (4 membres + 6 précordiales) → 12 dérivations."},
+{c:7,q:"Concernant l'ECG, cochez les propositions exactes :",o:["Quatre électrodes se placent sur les membres","Six électrodes précordiales se placent sur le thorax","Une dérivation est un capteur collé sur la peau","Une peau préparée limite les erreurs"],a:[0,1,3],m:1,e:"Électrode = capteur. Dérivation = point de vue électrique."},
+{c:7,q:"L'ECG enregistre :",o:["La contraction mécanique du cœur","L'activité électrique à la surface du corps","Les bruits du cœur","Le débit cardiaque"],a:[1],e:"Électrique, machi mécanique. L'électrique kayji 9bel l'mécanique."},
+{c:7,q:"L'intervalle PR reflète principalement :",o:["La durée de la contraction ventriculaire","Le temps de conduction des oreillettes vers les ventricules","La repolarisation ventriculaire","Le remplissage passif"],a:[1],e:"Men début P l début QRS: l'influx kaydouz men oreillettes l ventricules (b retard NAV)."},
+
+{c:8,q:"La systole correspond à :",o:["La phase de relaxation","La phase de contraction","La phase de remplissage","Un battement complet"],a:[1],e:"Systole = contraction. Diastole = relaxation/remplissage. Battement kaml = cycle."},
+{c:8,q:"Pendant le remplissage ventriculaire :",o:["Valves AV ouvertes, sigmoïdes fermées","Valves AV fermées, sigmoïdes ouvertes","Toutes les valves ouvertes","Toutes les valves fermées"],a:[0],e:"P oreillettes > P ventricules → AV ouvertes. Aorte bghat trje3 → sigmoïdes fermées."},
+{c:8,q:"Pendant l'éjection ventriculaire :",o:["Mitrale et tricuspide ouvertes","Aortique et pulmonaire ouvertes, AV fermées","Toutes les valves fermées","Seule la mitrale est ouverte"],a:[1],e:"Ventricules kaydf3o → sigmoïdes ouvertes, AV fermées."},
+{c:8,q:"Au tout début de la contraction ventriculaire :",o:["Toutes les valves sont brièvement fermées","Les valves AV sont ouvertes","Les sigmoïdes sont ouvertes","Le sang passe dans les oreillettes"],a:[0],e:"Contraction isovolumétrique: kolchi msdoud, pression kattl3."},
+{c:8,q:"Le premier bruit du cœur (B1) correspond à :",o:["La fermeture des valves aortique et pulmonaire","La fermeture des valves mitrale et tricuspide","L'ouverture des valves AV","Un écoulement turbulent"],a:[1],e:"B1 = fermeture AV → début systole ventriculaire."},
+{c:8,q:"Concernant B2, cochez les propositions exactes :",o:["Il correspond à la fermeture des valves aortique et pulmonaire","Il marque le début de la diastole ventriculaire","Il marque le début de la systole ventriculaire","Il correspond à la fermeture de la mitrale"],a:[0,1],m:1,e:"B2 = sigmoïdes ytsddo → début diastole."},
+{c:8,q:"Un souffle cardiaque traduit :",o:["Un écoulement turbulent","Une dépolarisation anormale","Une fermeture normale des valves","Un pouls irrégulier"],a:[0],e:"Souffle = écoulement turbulent, khasso interprétation clinique."},
+{c:8,q:"Le foyer aortique se situe :",o:["Au 2e espace intercostal droit, près du sternum","Au 2e espace intercostal gauche","Au bord inférieur gauche du sternum","À l'apex, 5e espace gauche"],a:[0],e:"Aortique = 2e EIC DROIT. Pulmonaire = 2e EIC gauche."},
+{c:8,q:"Le foyer mitral se situe :",o:["Au 2e espace intercostal droit","Au bord inférieur gauche du sternum","À la région de l'apex, habituellement 5e espace gauche","Au 2e espace intercostal gauche"],a:[2],e:"Mitral = apex, 5e EIC gauche."},
+{c:8,q:"Le foyer tricuspide se situe :",o:["Au bord inférieur gauche du sternum","Au 2e espace intercostal droit","À l'apex","Sous la clavicule droite"],a:[0],e:"Tricuspide = bord inférieur gauche du sternum."},
+{c:8,q:"Concernant l'auscultation, cochez les propositions exactes :",o:["Les foyers d'écoute correspondent exactement à la position anatomique des valves","Le foyer pulmonaire est au 2e espace intercostal gauche","Pendant l'éjection, les cordages tendineux sont tendus","Pendant le remplissage, les muscles papillaires sont contractés"],a:[1,2],m:1,e:"Foyers ≠ position exacte. F remplissage les papillaires relâchés."},
+
+{c:9,q:"Le débit cardiaque se calcule par :",o:["FC + VES","FC × VES","VES / FC","PAS − PAD"],a:[1],e:"DC = FC × VES."},
+{c:9,q:"FC = 80/min et VES = 60 mL. Le DC vaut :",o:["4,8 L/min","48 L/min","1,4 L/min","140 mL/min"],a:[0],e:"80 × 60 = 4800 mL/min = 4,8 L/min."},
+{c:9,q:"FC = 70/min et VES = 70 mL. Le DC vaut :",o:["4 900 mL/min","490 mL/min","140 mL/min","49 L/min"],a:[0],e:"Exemple dyal l'cours: 4900 mL/min = 4,9 L/min."},
+{c:9,q:"Le volume d'éjection systolique (VES) représente :",o:["Le volume éjecté par minute","Le volume éjecté à chaque battement","Le volume total de sang","Le nombre de battements par minute"],a:[1],e:"VES = par battement. DC = par minute."},
+{c:9,q:"DC = 5 L/min et FC = 100/min. Le VES vaut :",o:["500 mL","50 mL","5 mL","20 mL"],a:[1],e:"VES = DC/FC = 5000/100 = 50 mL."},
+
+{c:10,q:"Les artérioles :",o:["Ajustent la résistance et la distribution du débit","Sont le site principal des échanges","Possèdent des valvules","Ramènent le sang au cœur"],a:[0],e:"Artérioles = résistance. Échanges = capillaires. Valvules = veines."},
+{c:10,q:"Les capillaires sont adaptés aux échanges grâce à :",o:["Leur paroi fine","Leur média musculaire épaisse","Leurs valvules","Leur adventice épaisse"],a:[0],e:"Paroi r9i9a (endothélium) → échanges sahlin."},
+{c:10,q:"Par rapport à une veine de même calibre, une artère possède :",o:["Une paroi plus épaisse","Des valvules plus nombreuses","Une pression plus basse","Une média moins développée"],a:[0],e:"Artère: paroi 3erda 7it pression 3alya."},
+{c:10,q:"Quels facteurs favorisent le retour veineux ?",o:["Les valvules veineuses","La contraction des muscles des membres","Les mouvements respiratoires","L'immobilité prolongée"],a:[0,1,2],m:1,e:"Immobilité → stase veineuse, machi retour."},
+{c:10,q:"L'immobilité prolongée favorise :",o:["La stase veineuse","Une augmentation du retour veineux","Une meilleure oxygénation","La fermeture des valves AV"],a:[0],e:"Stase → risque thrombose. Mobilisation précoce!"},
+{c:10,q:"Les tuniques d'un vaisseau, de l'intérieur vers l'extérieur, sont :",o:["Adventice, média, intima","Intima, média, adventice","Média, intima, adventice","Intima, adventice, média"],a:[1],e:"Intima (endothélium) → média (muscle lisse) → adventice."},
+
+{c:11,q:"Les branches de la crosse aortique sont :",o:["Tronc brachiocéphalique, carotide commune gauche, subclavière gauche","Carotides communes droite et gauche, subclavières droite et gauche","Coronaires droite et gauche","Tronc cœliaque, mésentérique, rénales"],a:[0],e:"Tronc brachiocéphalique (→ carotide D + subclavière D), carotide G, subclavière G."},
+{c:11,q:"Les coronaires naissent de quelle portion de l'aorte ?",o:["Aorte ascendante","Crosse aortique","Aorte thoracique","Aorte abdominale"],a:[0],e:"Aorte ascendante."},
+{c:11,q:"La succession artérielle du membre supérieur est :",o:["Subclavière → axillaire → brachiale → radiale/ulnaire","Axillaire → subclavière → radiale → brachiale","Brachiale → axillaire → ulnaire","Carotide → subclavière → radiale"],a:[0],e:"Subclavière, axillaire, brachiale, radiale o ulnaire."},
+{c:11,q:"La succession artérielle du membre inférieur est :",o:["Iliaque externe → fémorale → poplitée → tibiales","Fémorale → iliaque externe → poplitée","Poplitée → fémorale → tibiales","Iliaque interne → poplitée → fémorale"],a:[0],e:"Iliaque externe, fémorale, poplitée, tibiales, dorsale du pied."},
+{c:11,q:"La veine céphalique a un trajet plutôt :",o:["Latéral","Médial","Postérieur","Profond"],a:[0],e:"Céphalique = côté pouce = latéral. Basilique = médial."},
+{c:11,q:"La grande saphène appartient au réseau :",o:["Superficiel médial","Profond","Superficiel postérieur","Pulmonaire"],a:[0],e:"Grande saphène = superficiel médial. Petite saphène = postérieure."},
+{c:11,q:"La veine cave supérieure assure :",o:["Le retour de la partie supérieure du corps","Le retour de la partie inférieure du corps","Le retour des poumons","Le drainage du myocarde"],a:[0],e:"VCS = partie supérieure, VCI = inférieure."},
+{c:11,q:"Concernant les veines, cochez les propositions exactes :",o:["Les jugulaires drainent la tête et le cou","Des veines perforantes relient les réseaux superficiel et profond","La médiane du coude relie fréquemment les réseaux superficiels","La petite saphène a un trajet médial"],a:[0,1,2],m:1,e:"Petite saphène = postérieure."},
+{c:11,q:"La bifurcation iliaque distribue le sang :",o:["Au bassin et aux membres inférieurs","À la tête et au cou","Aux membres supérieurs","Au myocarde"],a:[0],e:"Iliaques communes → bassin o rjlin."},
+
+{c:12,q:"Une pression artérielle de 130/85 mmHg signifie :",o:["PAS = 130, PAD = 85","PAS = 85, PAD = 130","FC = 130, PAS = 85","PAD = 130 mmHg"],a:[0],e:"Ra9m lowwel = PAS (max), tani = PAD (min)."},
+{c:12,q:"La pression artérielle diastolique (PAD) est :",o:["La pression minimale","La pression maximale","La moyenne des pressions","La pression veineuse"],a:[0],e:"PAD = minimale, PAS = maximale."},
+{c:12,q:"Chez l'adulte au repos, la fréquence du pouls est souvent de :",o:["40–60/min","60–100/min","100–140/min","20–40/min"],a:[1],e:"60–100/min, b interprétation selon l'effort, traitements, état clinique."},
+{c:12,q:"Le pouls se décrit par :",o:["Sa fréquence","Sa régularité","Son amplitude","Sa couleur"],a:[0,1,2],m:1,e:"Fréquence, régularité, amplitude."},
+{c:12,q:"Pour mesurer correctement la pression artérielle :",o:["Patient au repos, sans parler","Brassard adapté posé sur la peau","Bras soutenu à hauteur du cœur","Brassard posé par-dessus la manche"],a:[0,1,2],m:1,e:"Brassard 3la jeld, machi fo9 l7wayej."},
+{c:12,q:"Lors de la mesure auscultatoire, le premier bruit de Korotkoff correspond à :",o:["La PAS","La PAD","La FC","Le DC"],a:[0],e:"Awwel bruit = PAS, akher bruit = PAD."},
+{c:12,q:"Une valeur isolée élevée de pression artérielle :",o:["Suffit à poser un diagnostic d'HTA","Ne suffit pas à établir un diagnostic d'HTA","Doit être ignorée","Correspond toujours à un infarctus"],a:[1],e:"Khass n3awdo les mesures o nkteb les conditions."},
+{c:12,q:"L'infarctus se définit comme :",o:["Une nécrose liée à une ischémie prolongée","Un apport sanguin insuffisant réversible","Un thrombus dans une veine","Un écoulement turbulent"],a:[0],e:"Ischémie = na9s; infarctus = nécrose b sabab ischémie twila."},
+{c:12,q:"La thrombose veineuse est :",o:["La formation d'un thrombus dans une veine","Une nécrose du myocarde","Une dilatation de l'aorte","Une baisse du débit cardiaque"],a:[0],e:"Thrombus (jelta) f veine."},
+{c:12,q:"Une douleur thoracique aiguë ou une dyspnée brutale impose :",o:["Une évaluation urgente","Une simple surveillance le lendemain","Une prise de pouls uniquement","Aucune action particulière"],a:[0],e:"Urgence: évaluation tout de suite."},
+{c:12,q:"La pression artérielle dépend notamment :",o:["Du débit cardiaque","Des résistances","De la couleur de la peau","Du nombre de valves"],a:[0,1],m:1,e:"PA = f(DC, résistances)."}
+];
+Q.forEach((x,i)=>x.id=i);
+
+/* ---------- Flashcards ---------- */
+const F=[
+["Où est situé le cœur ?","Dans le <b>médiastin</b>, entre les poumons, sur le diaphragme, derrière le sternum.","west sder bin 2 poumons"],
+["Orientation de l'apex ?","Vers le <b>bas et la gauche</b>.",""],
+["Trois couches de la paroi (ext → int) ?","<b>Épicarde → myocarde → endocarde</b>.",""],
+["Épicarde = ?","Feuillet <b>viscéral</b> du péricarde séreux.",""],
+["Rôle du liquide péricardique ?","<b>Réduire les frottements</b>. Il est dans la cavité péricardique.",""],
+["Que reçoit l'OD ?","Le retour veineux systémique: <b>VCS, VCI, sinus coronaire</b>.",""],
+["Que reçoit l'OG ?","Les <b>veines pulmonaires</b> (sang riche en O₂).",""],
+["Valve entre OD et VD ?","<b>Tricuspide</b> (AV, 3 cuspides).","Tri = droite"],
+["Valve entre OG et VG ?","<b>Mitrale</b> (bicuspide).",""],
+["Valves sigmoïdes ?","<b>Aortique</b> (VG → aorte) et <b>pulmonaire</b> (VD → tronc pulmonaire).",""],
+["Rôle des cordages tendineux ?","Relient valves <b>AV</b> aux muscles papillaires, empêchent leur retournement.",""],
+["Où est la fosse ovale ?","<b>Septum interauriculaire</b> (vestige du foramen ovale).",""],
+["Trajet du sang en 4 étapes ?","VC → OD → tricuspide → VD → pulmonaire → artères pulm. → poumons → veines pulm. → OG → mitrale → VG → aortique → aorte.",""],
+["Sang des artères pulmonaires ?","<b>Pauvre en O₂</b>.","l'exception l'kbira"],
+["Artère ou veine: critère ?","Le <b>sens du flux</b> (s'éloigne / revient au cœur), pas l'oxygénation.",""],
+["Origine des coronaires ?","<b>Aorte ascendante</b>.",""],
+["Branches de la coronaire gauche ?","<b>IVA</b> et <b>circonflexe</b>.",""],
+["Où se jette le sinus coronaire ?","Dans l'<b>OD</b>.",""],
+["Ischémie vs infarctus ?","Ischémie = apport <b>insuffisant</b>. Infarctus = <b>nécrose</b> par ischémie prolongée.",""],
+["Cardiomyocytes ?","Cellules <b>striées, involontaires</b>, reliées par disques intercalaires.",""],
+["Contenu des disques intercalaires ?","<b>Desmosomes</b> (attache) + <b>jonctions communicantes</b> (propagation électrique).",""],
+["Pacemaker normal ?","<b>Nœud sinusal</b>.",""],
+["Rôle du nœud AV ?","<b>Ralentit</b> l'influx pour laisser les oreillettes finir le remplissage.",""],
+["Ordre de conduction ?","Sinusal → NAV → His → branches D/G → Purkinje.","SAHBP"],
+["Onde P ?","<b>Dépolarisation des oreillettes</b>.",""],
+["Complexe QRS ?","<b>Dépolarisation des ventricules</b>.",""],
+["Onde T ?","<b>Repolarisation des ventricules</b>.",""],
+["ECG standard: électrodes / dérivations ?","<b>10 électrodes</b> (4 membres + 6 précordiales) → <b>12 dérivations</b>.",""],
+["Électrode vs dérivation ?","Électrode = <b>capteur</b>. Dérivation = <b>point de vue électrique</b>.",""],
+["Valves pendant le remplissage ?","AV <b>ouvertes</b>, sigmoïdes <b>fermées</b>.",""],
+["Valves pendant l'éjection ?","AV <b>fermées</b>, sigmoïdes <b>ouvertes</b>.",""],
+["B1 ?","Fermeture <b>mitrale + tricuspide</b> → début systole ventriculaire.",""],
+["B2 ?","Fermeture <b>aortique + pulmonaire</b> → début diastole ventriculaire.",""],
+["Les 4 foyers d'auscultation ?","Aortique 2e EIC D · Pulmonaire 2e EIC G · Tricuspide bord inf. G du sternum · Mitral apex 5e EIC G.","A-P-T-M"],
+["Formule du débit cardiaque ?","<b>DC = FC × VES</b>. Ex: 70 × 70 mL = 4,9 L/min.",""],
+["Rôle des artérioles ?","Ajuster la <b>résistance</b> et la distribution du débit.",""],
+["Facteurs du retour veineux ?","<b>Valvules</b>, <b>pompe musculaire</b>, <b>mouvements respiratoires</b>.",""],
+["Branches de la crosse aortique ?","Tronc brachiocéphalique, carotide commune G, subclavière G.","TaCaS"],
+["Céphalique vs basilique ?","Céphalique = <b>latérale</b>. Basilique = <b>médiale</b>.",""],
+["Grande vs petite saphène ?","Grande = superficielle <b>médiale</b>. Petite = <b>postérieure</b> de la jambe.",""],
+["PAS / PAD ?","PAS = pression <b>maximale</b>. PAD = <b>minimale</b>. 120/80 → PAS 120.",""],
+["Korotkoff: 1er et dernier bruit ?","1er bruit = <b>PAS</b>. Dernier bruit = <b>PAD</b>.",""],
+["Conditions de mesure de la PA ?","Repos, sans parler, brassard adapté sur la peau, bras à hauteur du cœur, mesures répétées.",""],
+["Pouls adulte au repos ?","Souvent <b>60–100/min</b>. Décrire fréquence, régularité, amplitude.",""]
+];
+
+/* ---------- counters ---------- */
+document.getElementById('nq').textContent=Q.length;
+document.getElementById('nf').textContent=F.length;
+(function(){const exam=new Date(2026,10,13);const now=new Date();const t=new Date(now.getFullYear(),now.getMonth(),now.getDate());const d=Math.round((exam-t)/864e5);document.getElementById('cd').textContent=d>0?d:(d===0?"0":"–");})();
+
+/* ---------- router ---------- */
+const views=["plan","cours","qcm","cartes"];
+function route(){let v=(location.hash||"#plan").slice(1);if(!views.includes(v))v="plan";views.forEach(n=>{document.getElementById('v-'+n).hidden=n!==v});document.querySelectorAll('.tabs a').forEach(a=>{if(a.dataset.v===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});if(v==='qcm')refreshWrong();if(v==='cartes')refreshHard();}
+window.addEventListener('hashchange',()=>{route();window.scrollTo({top:document.querySelector('.tabs').offsetTop,behavior:'auto'})});
+
+/* ---------- plan ---------- */
+const PLAN=[
+ {d:"2026-11-10",w:"Mardi",s:"Bloc A · Anatomie",t:["9ra chapitres 1, 2, 3, 4 (cours tab)","Blurting: sedd l'écran, kteb trajet ddem o les 4 valves men rassek","Exercice 'rtteb trajet ddem' f chapitre 4","QCM par chapitre: 1, 2, 3, 4","Flashcards 10 min 9bel n3as"]},
+ {d:"2026-11-11",w:"Mercredi",s:"Bloc B · Cœur électrique et mécanique",t:["Sba7: QCM 'Mes erreurs' dyal lbare7 (spacing)","9ra chapitres 5, 6, 7, 8, 9","Char7 b sotek: 3lach B1 = début systole, 3lach NAV kayralentir","QCM par chapitre: 5, 6, 7, 8, 9","Flashcards 'ma 3reftahomch'"]},
+ {d:"2026-11-12",w:"Jeudi",s:"Bloc C · Vaisseaux + examen blanc",t:["Sba7: QCM 'Mes erreurs'","9ra chapitres 10, 11, 12","QCM par chapitre: 10, 11, 12","Examen blanc (30 Q mkhltin), b la montre 30 min","3awed ghir les erreurs dyal l'examen blanc, o n3es bekri"]},
+ {d:"2026-11-13",w:"Vendredi",s:"Jour J",t:["15 min: les boîtes 'Pièges QCM' dyal ga3 les chapitres","Flashcards li ba9i ma 3reftihomch","Walou ma jdid. Kol mzyan o dkhel mrta7"]}
+];
+(function(){const box=document.getElementById('days');const st=store.get('cv-plan',{});const now=new Date();const today=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,'0')+"-"+String(now.getDate()).padStart(2,'0');
+ PLAN.forEach((p,i)=>{const el=document.createElement('div');el.className='day'+(p.d===today?' today':'');
+  el.innerHTML='<div class="when">'+p.w+'<small>'+p.d.slice(8)+'/11 · '+p.s+'</small>'+(p.d===today?'<small style="color:var(--art)">● lyoum</small>':'')+'</div><div class="todo"></div>';
+  const td=el.querySelector('.todo');
+  p.t.forEach((t,j)=>{const id='p'+i+'_'+j;const lb=document.createElement('label');const cb=document.createElement('input');cb.type='checkbox';cb.id=id;cb.checked=!!st[id];const sp=document.createElement('span');sp.textContent=t;lb.append(cb,sp);if(cb.checked)lb.classList.add('done');cb.addEventListener('change',()=>{st[id]=cb.checked;lb.classList.toggle('done',cb.checked);store.set('cv-plan',st)});td.append(lb)});
+  box.append(el)});})();
+
+/* ---------- cours rail ---------- */
+(function(){const rail=document.getElementById('rail');CH.forEach((n,i)=>{const b=document.createElement('button');b.innerHTML='<span class="k">'+String(i+1).padStart(2,'0')+'</span><span>'+n+'</span>';b.addEventListener('click',()=>document.getElementById('c'+(i+1)).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));rail.append(b)});
+ if('IntersectionObserver' in window){const bs=[...rail.children];const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const k=+e.target.id.slice(1)-1;bs.forEach((b,j)=>b.classList.toggle('on',j===k))}})},{rootMargin:"-30% 0px -60% 0px"});document.querySelectorAll('.chap').forEach(c=>io.observe(c));}})();
+
+/* ---------- ordering game ---------- */
+(function(){const steps=["Veines caves","OD","Tricuspide","VD","Valve pulmonaire","Artères pulmonaires","Poumons","Veines pulmonaires","OG","Mitrale","VG","Valve aortique","Aorte","Organes"];
+ const pool=document.getElementById('ogPool'),ans=document.getElementById('ogAns'),msg=document.getElementById('ogMsg');let picked=[];
+ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+ function draw(){pool.innerHTML='';ans.innerHTML='';const left=order.filter(s=>!picked.includes(s));left.forEach(s=>{const b=document.createElement('button');b.className='chip';b.textContent=s;b.onclick=()=>{picked.push(s);draw()};pool.append(b)});picked.forEach((s,i)=>{const b=document.createElement('button');b.className='chip';b.textContent=(i+1)+'. '+s;b.title='Clicki bach t7eyydha';b.onclick=()=>{picked.splice(i,1);draw()};ans.append(b)});if(!picked.length)ans.innerHTML='<span class="msg">Jawab dyalek ghadi yban hna</span>';}
+ let order=shuffle(steps);
+ document.getElementById('ogReset').onclick=()=>{picked=[];order=shuffle(steps);msg.textContent='';draw()};
+ document.getElementById('ogCheck').onclick=()=>{if(picked.length<steps.length){msg.textContent='Ba9i '+(steps.length-picked.length)+' étapes.';return}let ok=0;[...ans.children].forEach((b,i)=>{const good=picked[i]===steps[i];if(good)ok++;b.classList.add(good?'ok':'no')});msg.textContent=ok===steps.length?'Mzyan! Trajet kaml s7i7.':ok+'/'+steps.length+' f blasthom. Les 7mrin ghaltin, 3awd.';};
+ draw();})();
+
+/* ---------- QCM engine ---------- */
+let wrong=new Set(store.get('cv-wrong',[]));
+function saveWrong(){store.set('cv-wrong',[...wrong])}
+function refreshWrong(){const n=wrong.size;document.getElementById('mWrong').textContent=n+(n===1?' question':' questions')+' à revoir';document.getElementById('mWrongBtn').disabled=!n;document.getElementById('mWrongBtn').style.opacity=n?1:.5;document.getElementById('tq').textContent=n?n+' à revoir':Q.length;}
+document.getElementById('mAll').textContent='Les '+Q.length+' questions, f désordre';
+const chips=document.getElementById('chapChips');CH.forEach((n,i)=>{const b=document.createElement('button');const k=Q.filter(q=>q.c===i+1).length;b.textContent=(i+1)+' · '+n+' ('+k+')';b.onclick=()=>start(Q.filter(q=>q.c===i+1).map(q=>q.id));chips.append(b)});
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.mode;if(m==='exam')start(shuffle(Q.map(q=>q.id)).slice(0,30));else if(m==='all')start(Q.map(q=>q.id));else if(wrong.size)start([...wrong]);}));
+let run=null;
+const $=id=>document.getElementById(id);
+function start(ids){run={ids:shuffle(ids),i:0,score:0,miss:[]};$('qSetup').hidden=true;$('qEnd').hidden=true;$('qRun').hidden=false;show();window.scrollTo({top:document.querySelector('.tabs').offsetTop})}
+let sel,answered,perm;
+function show(){const q=Q[run.ids[run.i]];sel=new Set();answered=false;perm=shuffle(q.o.map((_,i)=>i));
+ $('qPos').textContent='Question '+(run.i+1)+' / '+run.ids.length;$('qScore').textContent='Score: '+run.score;$('qBar').style.width=(run.i/run.ids.length*100)+'%';
+ $('qChap').textContent='Ch. '+q.c+' · '+CH[q.c-1];$('qType').textContent=q.m?'Plusieurs réponses':'Une seule réponse';$('qType').className='pill '+(q.m?'art':'ven');
+ $('qText').textContent=q.q;$('qExp').hidden=true;$('qGo').textContent='Valider';$('qGo').disabled=true;
+ const box=$('qOpts');box.innerHTML='';perm.forEach((oi,pos)=>{const b=document.createElement('button');b.className='opt';b.dataset.oi=oi;b.innerHTML='<span class="l">'+'ABCDEF'[pos]+'</span><span></span>';b.lastChild.textContent=q.o[oi];b.onclick=()=>{if(answered)return;if(q.m){sel.has(oi)?sel.delete(oi):sel.add(oi)}else{sel=new Set([oi])}[...box.children].forEach(c=>c.classList.toggle('sel',sel.has(+c.dataset.oi)));$('qGo').disabled=!sel.size};box.append(b)});}
+$('qGo').addEventListener('click',()=>{const q=Q[run.ids[run.i]];
+ if(!answered){answered=true;const good=new Set(q.a);const ok=good.size===sel.size&&[...good].every(x=>sel.has(x));
+  [...$('qOpts').children].forEach(c=>{const oi=+c.dataset.oi;c.setAttribute('aria-disabled','true');c.classList.remove('sel');if(good.has(oi)&&sel.has(oi))c.classList.add('good');else if(!good.has(oi)&&sel.has(oi))c.classList.add('wrong');else if(good.has(oi))c.classList.add('miss','good')});
+  if(ok){run.score++;wrong.delete(q.id)}else{wrong.add(q.id);run.miss.push(q.id)}saveWrong();
+  const ex=$('qExp');ex.hidden=false;ex.className='exp '+(ok?'ok':'no');ex.innerHTML='<b class="v"></b><span></span>';ex.firstChild.textContent=ok?'S7i7!':'Ghalat. Jawab: '+q.a.map(x=>'ABCDEF'[perm.indexOf(x)]).sort().join(', ');ex.lastChild.textContent=q.e;
+  $('qScore').textContent='Score: '+run.score;$('qGo').textContent=run.i+1<run.ids.length?'Suivant':'Chouf natija';$('qGo').disabled=false;$('qGo').focus();
+ }else{run.i++;if(run.i<run.ids.length)show();else end();}});
+$('qQuit').addEventListener('click',()=>{run=null;$('qRun').hidden=true;$('qSetup').hidden=false;refreshWrong()});
+function end(){$('qRun').hidden=true;const e=$('qEnd');e.hidden=false;const n=run.ids.length,s=run.score,p=Math.round(s/n*100);
+ const verdict=p>=85?'Wajed. Rkkez ghir 3la li ghlati fihom.':p>=65?'Mzyan, walakin ba9i chi thughrat. 3awed les erreurs ghedda f sba7.':'3awed l9raya dyal les chapitres li ghlati fihom, 3ad dir "Mes erreurs".';
+ e.innerHTML='<div class="score">'+s+'<small> / '+n+' · '+p+'%</small></div><p class="sub"></p><div class="row"><button class="btn primary" id="reW">3awd ghir les erreurs ('+run.miss.length+')</button><button class="btn" id="reB">Rje3 l les modes</button></div><div class="wrongs" id="wl"></div>';
+ e.querySelector('.sub').textContent=verdict;
+ const wl=e.querySelector('#wl');run.miss.forEach(id=>{const q=Q[id];const d=document.createElement('div');d.textContent=q.q;const sm=document.createElement('small');sm.textContent='→ '+q.a.map(x=>q.o[x]).join(' · ');d.append(sm);wl.append(d)});
+ const miss=run.miss.slice();e.querySelector('#reW').disabled=!miss.length;e.querySelector('#reW').onclick=()=>start(miss);e.querySelector('#reB').onclick=()=>{e.hidden=true;$('qSetup').hidden=false;refreshWrong()};}
+
+/* ---------- Flashcards ---------- */
+let hard=new Set(store.get('cv-hard',[]));
+function refreshHard(){$('fHardN').textContent=hard.size;$('fHard').disabled=!hard.size}
+let deck=[],fi=0,flipped=false,doneN=0,total=0;
+function fstart(ids){deck=shuffle(ids);fi=0;doneN=0;total=deck.length;flipped=false;fdraw()}
+function fdraw(){const card=$('fc');if(!deck.length){card.innerHTML='<div class="face"><span class="side">Salit</span><div class="front">Kemmelti ga3 les cartes.</div><div class="dz">'+(hard.size?hard.size+' cartes ba9i f "ma 3reftahomch".':'Ga3 les cartes 3reftihom.')+'</div></div>';$('fBtns').hidden=true;$('fPos').textContent='';$('fLeft').textContent='';$('fBar').style.width='100%';refreshHard();return}
+ const k=deck[0],c=F[k];$('fPos').textContent=doneN+' / '+total+' 3reftihom';$('fLeft').textContent=deck.length+' ba9yin';$('fBar').style.width=(doneN/total*100)+'%';
+ if(!flipped){card.innerHTML='<div class="face"><span class="side">Question</span><div class="front"></div></div><span class="hint">Clicki bach t9leb</span>';card.querySelector('.front').textContent=c[0];$('fBtns').hidden=true}
+ else{card.innerHTML='<div class="face"><span class="side">Réponse</span><div class="back">'+c[1]+'</div>'+(c[2]?'<div class="dz"></div>':'')+'</div>';if(c[2])card.querySelector('.dz').textContent='Astuce: '+c[2];$('fBtns').hidden=false}}
+$('fc').addEventListener('click',()=>{if(!deck.length)return;flipped=!flipped;fdraw()});
+$('fYes').addEventListener('click',()=>{const k=deck.shift();hard.delete(k);store.set('cv-hard',[...hard]);doneN++;flipped=false;fdraw()});
+$('fNo').addEventListener('click',()=>{const k=deck.shift();hard.add(k);store.set('cv-hard',[...hard]);deck.splice(Math.min(3,deck.length),0,k);flipped=false;fdraw()});
+$('fAll').addEventListener('click',()=>fstart(F.map((_,i)=>i)));
+$('fHard').addEventListener('click',()=>{if(hard.size)fstart([...hard])});
+refreshHard();fstart(F.map((_,i)=>i));
+
+refreshWrong();route();
+
+/* ---------- lightbox ---------- */
+(function(){const lb=document.getElementById('lb'),im=document.getElementById('lbI');let last=null;
+function open(src,t,btn){last=btn;im.src=src;document.getElementById('lbT').textContent=t;lb.classList.remove('big');lb.hidden=false;document.getElementById('lbX').focus();}
+function close(){lb.hidden=true;im.src='';if(last)last.focus();}
+document.querySelectorAll('.pic .zoom').forEach(b=>b.addEventListener('click',()=>open(b.dataset.src,b.querySelector('img').alt,b)));
+function tog(){lb.classList.toggle('big')}
+im.addEventListener('click',tog);document.getElementById('lbZ').addEventListener('click',tog);
+document.getElementById('lbX').addEventListener('click',close);
+lb.addEventListener('click',e=>{if(e.target.id==='lbS')close()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!lb.hidden)close()});})();
+})();
+</script>
+
+</body></html>
